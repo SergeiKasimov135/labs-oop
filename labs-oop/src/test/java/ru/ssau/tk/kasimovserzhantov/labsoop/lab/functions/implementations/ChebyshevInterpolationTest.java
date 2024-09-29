@@ -1,4 +1,4 @@
-package ru.ssau.tk.kasimov.labsoop.lab.functions.implementations;
+package ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.implementations;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;

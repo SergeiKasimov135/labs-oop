@@ -1,8 +1,8 @@
-package ru.ssau.tk.kasimov.labsoop.lab.functions.coredefenitions;
+package ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.coredefenitions;
 
 import org.junit.jupiter.api.Test;
-import ru.ssau.tk.kasimov.labsoop.lab.functions.implementations.SqrFunction;
-import ru.ssau.tk.kasimov.labsoop.lab.functions.implementations.IdentityFunction;
+import ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.implementations.SqrFunction;
+import ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.implementations.IdentityFunction;
 
 import static org.junit.jupiter.api.Assertions.*;
 
