@@ -1,7 +1,7 @@
-package ru.ssau.tk.kasimov.labsoop.lab2.functions.implementations;
+package ru.ssau.tk.kasimov.labsoop.lab.functions.implementations;
 
 import org.junit.jupiter.api.Test;
-import ru.ssau.tk.kasimov.labsoop.lab2.functions.interfaces.MathFunction;
+import ru.ssau.tk.kasimov.labsoop.lab.functions.coredefenitions.MathFunction;
 
 import static org.junit.jupiter.api.Assertions.*;
 
