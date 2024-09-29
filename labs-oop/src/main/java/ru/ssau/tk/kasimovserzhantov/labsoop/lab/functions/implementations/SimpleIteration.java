@@ -1,25 +1,41 @@
 package ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.implementations;
 
-import org.junit.jupiter.api.Test;
 import ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.coredefenitions.MathFunction;
 
-import static org.junit.jupiter.api.Assertions.*;
+public class SimpleIteration implements MathFunction {
 
-class SqrFunctionTest {
+    private MathFunction g;
+    private final double initialGuess;
+    private final int maxIterations;
+    private final double tolerance;
 
-    private final MathFunction sqrFunction = new SqrFunction();
+    @Override
+    public double apply(double x) {
+        double curr = initialGuess;
+        for (int i = 0; i < maxIterations; ++i) {
+            double next = g.apply(curr);
+            if (Math.abs(next - curr) < tolerance) {
+                return next;
+            }
+            curr = next;
+        }
 
-    @Test
-    void apply_ReturnsSquareOfInputNumber() {
-        assertEquals(Math.pow(2., 2), this.sqrFunction.apply(2.), 0.0001);
-        assertEquals(Math.pow(3., 2), this.sqrFunction.apply(3.), 0.0001);
-        assertEquals(Math.pow(0., 2), this.sqrFunction.apply(0.), 0.0001);
-        assertEquals(Math.pow(25., 2), this.sqrFunction.apply(25.), 0.0001);
+        return curr;
+    }
 
-        assertEquals(Math.pow(-2., 2), sqrFunction.apply(-2.), 0.001);
-        assertEquals(Math.pow(-3., 2), sqrFunction.apply(-3.), 0.001);
+    public SimpleIteration(MathFunction g, double initialGuess, int maxIterations, double tolerance) {
+        if (g == null)
+            throw new IllegalArgumentException("Function cannot be null");
 
-        assertEquals(Double.POSITIVE_INFINITY, sqrFunction.apply(Double.POSITIVE_INFINITY));
-        assertEquals(Double.POSITIVE_INFINITY, sqrFunction.apply(Double.NEGATIVE_INFINITY));
+        if (maxIterations <= 0)
+            throw new IllegalArgumentException("Maximum iterations must be positive");
+
+        if (tolerance <= 0)
+            throw new IllegalArgumentException("Tolerance must be positive");
+
+        this.g = g;
+        this.initialGuess = initialGuess;
+        this.maxIterations = maxIterations;
+        this.tolerance = tolerance;
     }
 }
