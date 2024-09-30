@@ -22,6 +22,52 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
         }
     }
 
+    public LinkedListTabulatedFunction(double[] xValues, double[] yValues) {
+        if (xValues.length < 2) {
+            throw new IllegalArgumentException("Array's length should be at least 2");
+        }
+
+        if (xValues.length != yValues.length) {
+            throw new IllegalArgumentException("Arrays must be the same length");
+        }
+
+        for (int i = 0; i < xValues.length; ++i) {
+            if (i > 0 && xValues[i] < xValues[i - 1])
+                throw new IllegalArgumentException("Array must be sorted in increasing order");
+
+            addNode(xValues[i], yValues[i]);
+        }
+    }
+
+    public LinkedListTabulatedFunction(MathFunction source, double xFrom, double xTo, int count) {
+        if (count < 2) {
+            throw new IllegalArgumentException("Count should be at least 2");
+        }
+
+        if (source == null) {
+            throw new IllegalArgumentException("Source can't be a null");
+        }
+
+        if (xFrom > xTo) {
+            double tmp = xTo;
+            xTo = xFrom;
+            xFrom = tmp;
+        }
+
+        if (xFrom == xTo) {
+            for (int i = 0; i < count; ++i) {
+                addNode(xFrom, source.apply(xFrom));
+            }
+        } else {
+            double step = (xTo - xFrom) / (count - 1);
+            for (int i = 0; i < count; ++i) {
+                double x = xFrom + step * i;
+                double y = source.apply(x);
+                addNode(x, y);
+            }
+        }
+    }
+
     private void isIndexValid(int index) {
         if (index < 0 || index >= getCount())
             throw new IndexOutOfBoundsException();
@@ -265,52 +311,6 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
         Node leftNode = getNode(floorIndex);
         Node rightNode = leftNode.next;
         return interpolate(x, leftNode.x, rightNode.x, leftNode.y, rightNode.y);
-    }
-
-    public LinkedListTabulatedFunction(double[] xValues, double[] yValues) {
-        if (xValues.length < 2) {
-            throw new IllegalArgumentException("Array's length should be at least 2");
-        }
-
-        if (xValues.length != yValues.length) {
-            throw new IllegalArgumentException("Arrays must be the same length");
-        }
-
-        for (int i = 0; i < xValues.length; ++i) {
-            if (i > 0 && xValues[i] < xValues[i - 1])
-                throw new IllegalArgumentException("Array must be sorted in increasing order");
-
-            addNode(xValues[i], yValues[i]);
-        }
-    }
-
-    public LinkedListTabulatedFunction(MathFunction source, double xFrom, double xTo, int count) {
-        if (count < 2) {
-            throw new IllegalArgumentException("Count should be at least 2");
-        }
-
-        if (source == null) {
-            throw new IllegalArgumentException("Source can't be a null");
-        }
-
-        if (xFrom > xTo) {
-            double tmp = xTo;
-            xTo = xFrom;
-            xFrom = tmp;
-        }
-
-        if (xFrom == xTo) {
-            for (int i = 0; i < count; ++i) {
-                addNode(xFrom, source.apply(xFrom));
-            }
-        } else {
-            double step = (xTo - xFrom) / (count - 1);
-            for (int i = 0; i < count; ++i) {
-                double x = xFrom + step * i;
-                double y = source.apply(x);
-                addNode(x, y);
-            }
-        }
     }
 
 }

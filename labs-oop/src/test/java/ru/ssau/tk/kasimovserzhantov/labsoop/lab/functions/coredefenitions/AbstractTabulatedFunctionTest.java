@@ -21,21 +21,18 @@ class AbstractTabulatedFunctionTest {
 
     @Test
     public void interpolate_ReturnsValidResultOutsideBoundaries() {
-        // Тестируем интерполяцию вне границ (должно возвращать y0 или y1)
         assertEquals(1.5, mockFunction.interpolate(0.5, 0), 0.001);
         assertEquals(4.5, mockFunction.interpolate(3.5, 1), 0.001);
     }
 
     @Test
     public void apply_ReturnsValidResultAtExactValues() {
-        // Тестируем apply для точных значений внутри границ
         assertEquals(2., mockFunction.apply(1.), 0.001);
         assertEquals(4., mockFunction.apply(3.), 0.001);
     }
 
     @Test
     public void apply_ReturnsValidResultAtInterpolatedValues() {
-        // Тестируем apply для интерполированных значений внутри границ
         assertEquals(3., mockFunction.apply(2.), 0.001);
         assertEquals(2.5, mockFunction.apply(1.5), 0.001);
         assertEquals(3.5, mockFunction.apply(2.5), 0.001);
@@ -43,7 +40,6 @@ class AbstractTabulatedFunctionTest {
 
     @Test
     public void apply_ReturnsValidResultOutsideBoundaries() {
-        // Тестируем apply для значений вне границ
         assertEquals(2., mockFunction.apply(0.), 0.001);
         assertEquals(4., mockFunction.apply(4.), 0.001);
     }

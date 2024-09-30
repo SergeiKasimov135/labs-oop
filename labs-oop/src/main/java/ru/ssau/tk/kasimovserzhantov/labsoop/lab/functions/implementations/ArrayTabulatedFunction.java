@@ -14,6 +14,58 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
     private double[] yValues;
     private int count;
 
+    public ArrayTabulatedFunction(double[] xValues, double[] yValues) {
+        if (xValues.length < 2) {
+            throw new IllegalArgumentException("Array's length should be at least 2");
+        }
+
+        if (xValues.length != yValues.length) {
+            throw new IllegalArgumentException("Arrays must be the same length");
+        }
+
+        this.count = xValues.length;
+        this.xValues = Arrays.copyOf(xValues, xValues.length);
+        this.yValues = Arrays.copyOf(yValues, yValues.length);
+
+        for (int i = 1; i < xValues.length; ++i) {
+            if (xValues[i] < xValues[i - 1])
+                throw new IllegalArgumentException("Array must be sorted in increasing order");
+        }
+    }
+
+    public ArrayTabulatedFunction(MathFunction source, double xFrom, double xTo, int count) {
+        if (count < 2) {
+            throw new IllegalArgumentException("Count should be at least 2");
+        }
+
+        if (source == null) {
+            throw new IllegalArgumentException("Source can't be a null");
+        }
+
+        if (xFrom > xTo) {
+            double tmp = xTo;
+            xTo = xFrom;
+            xFrom = tmp;
+        }
+
+        this.count = count;
+        this.xValues = new double[count];
+        this.yValues = new double[count];
+
+        if (xFrom == xTo) {
+            double y = source.apply(xFrom);
+
+            Arrays.fill(this.xValues, xFrom);
+            Arrays.fill(this.yValues, y);
+        } else {
+            double step = (xTo - xFrom) / (count - 1);
+            for (int i = 0; i < count; ++i) {
+                this.xValues[i] = xFrom + step * i;
+                this.yValues[i] = source.apply(this.xValues[i]);
+            }
+        }
+    }
+
     private void isIndexValid(int index) {
         if (index < 0 || index >= getCount())
             throw new IndexOutOfBoundsException();
@@ -154,55 +206,4 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
                 yValues[floorIndex], yValues[floorIndex + 1]);
     }
 
-    public ArrayTabulatedFunction(double[] xValues, double[] yValues) {
-        if (xValues.length < 2) {
-            throw new IllegalArgumentException("Array's length should be at least 2");
-        }
-
-        if (xValues.length != yValues.length) {
-            throw new IllegalArgumentException("Arrays must be the same length");
-        }
-
-        this.count = xValues.length;
-        this.xValues = Arrays.copyOf(xValues, xValues.length);
-        this.yValues = Arrays.copyOf(yValues, yValues.length);
-
-        for (int i = 1; i < xValues.length; ++i) {
-            if (xValues[i] < xValues[i - 1])
-                throw new IllegalArgumentException("Array must be sorted in increasing order");
-        }
-    }
-
-    public ArrayTabulatedFunction(MathFunction source, double xFrom, double xTo, int count) {
-        if (count < 2) {
-            throw new IllegalArgumentException("Count should be at least 2");
-        }
-
-        if (source == null) {
-            throw new IllegalArgumentException("Source can't be a null");
-        }
-
-        if (xFrom > xTo) {
-            double tmp = xTo;
-            xTo = xFrom;
-            xFrom = tmp;
-        }
-
-        this.count = count;
-        this.xValues = new double[count];
-        this.yValues = new double[count];
-
-        if (xFrom == xTo) {
-            double y = source.apply(xFrom);
-
-            Arrays.fill(this.xValues, xFrom);
-            Arrays.fill(this.yValues, y);
-        } else {
-            double step = (xTo - xFrom) / (count - 1);
-            for (int i = 0; i < count; ++i) {
-                this.xValues[i] = xFrom + step * i;
-                this.yValues[i] = source.apply(this.xValues[i]);
-            }
-        }
-    }
 }

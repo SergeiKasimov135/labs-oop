@@ -5,6 +5,13 @@ public class MockTabulatedFunction extends AbstractTabulatedFunction {
     private final double x0, x1;
     private double y0, y1;
 
+    public MockTabulatedFunction(double x0, double x1, double y0, double y1) {
+        this.x0 = x0;
+        this.x1 = x1;
+        this.y0 = y0;
+        this.y1 = y1;
+    }
+
     private void isIndexValid(int index) {
         if (!(index == 0 || index == 1))
             throw new IndexOutOfBoundsException("Mock object has only two coords");
@@ -81,13 +88,6 @@ public class MockTabulatedFunction extends AbstractTabulatedFunction {
     @Override
     protected double interpolate(double x, int floorIndex) {
         return interpolate(x, x0, x1, y0, y1);
-    }
-
-    public MockTabulatedFunction(double x0, double x1, double y0, double y1) {
-        this.x0 = x0;
-        this.x1 = x1;
-        this.y0 = y0;
-        this.y1 = y1;
     }
 
 }

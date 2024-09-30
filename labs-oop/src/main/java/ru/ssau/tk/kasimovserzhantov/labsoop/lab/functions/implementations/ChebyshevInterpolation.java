@@ -7,6 +7,11 @@ public class ChebyshevInterpolation implements MathFunction {
     private final double[] coefficients;
     private final int degree;
 
+    public ChebyshevInterpolation(double[] coefficients) {
+        this.coefficients = coefficients;
+        this.degree = coefficients.length - 1;
+    }
+
     @Override
     public double apply(double x) {
         double result = 0;
@@ -23,11 +28,6 @@ public class ChebyshevInterpolation implements MathFunction {
         if (n == 1)
             return x;
         return 2 * x * chebyshevPolynomial(n - 1, x) - chebyshevPolynomial(n - 2, x);
-    }
-
-    public ChebyshevInterpolation(double[] coefficients) {
-        this.coefficients = coefficients;
-        this.degree = coefficients.length - 1;
     }
 
     public double[] getCoefficients() {
