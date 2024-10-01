@@ -202,7 +202,7 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
 
     @Override
     protected double interpolate(double x, int floorIndex) {
-        return count == 1 ? yValues[0] : interpolate(x, xValues[floorIndex], xValues[floorIndex + 1],
+        return interpolate(x, xValues[floorIndex], xValues[floorIndex + 1],
                 yValues[floorIndex], yValues[floorIndex + 1]);
     }
 
