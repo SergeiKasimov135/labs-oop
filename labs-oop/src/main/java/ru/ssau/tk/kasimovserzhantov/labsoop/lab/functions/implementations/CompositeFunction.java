@@ -1,6 +1,6 @@
 package ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.implementations;
 
-import ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.coredefenitions.MathFunction;
+import ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.coredefenitions.interfaces.MathFunction;
 
 public class CompositeFunction implements MathFunction {
 

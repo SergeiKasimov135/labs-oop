@@ -1,5 +1,7 @@
 package ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.coredefenitions;
 
+import ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.coredefenitions.abstractclasses.AbstractTabulatedFunction;
+
 public class MockTabulatedFunction extends AbstractTabulatedFunction {
 
     private final double x0, x1;

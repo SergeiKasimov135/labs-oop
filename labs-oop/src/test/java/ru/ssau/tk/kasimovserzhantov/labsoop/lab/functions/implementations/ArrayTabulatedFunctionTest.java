@@ -1,8 +1,7 @@
 package ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.implementations;
 
 import org.junit.jupiter.api.Test;
-import ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.coredefenitions.MathFunction;
-import ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.implementations.ArrayTabulatedFunction;
+import ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.coredefenitions.interfaces.MathFunction;
 
 import static org.junit.jupiter.api.Assertions.*;
 

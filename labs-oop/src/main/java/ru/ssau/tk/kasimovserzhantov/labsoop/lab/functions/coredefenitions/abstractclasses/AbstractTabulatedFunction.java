@@ -1,4 +1,6 @@
-package ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.coredefenitions;
+package ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.coredefenitions.abstractclasses;
+
+import ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.coredefenitions.interfaces.TabulatedFunction;
 
 public abstract class AbstractTabulatedFunction implements TabulatedFunction {
 

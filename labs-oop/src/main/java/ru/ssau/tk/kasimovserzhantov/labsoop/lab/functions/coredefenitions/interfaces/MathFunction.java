@@ -1,4 +1,4 @@
-package ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.coredefenitions;
+package ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.coredefenitions.interfaces;
 
 import ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.implementations.CompositeFunction;
 

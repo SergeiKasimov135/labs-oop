@@ -1,9 +1,6 @@
 package ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.coredefenitions;
 
 import org.junit.jupiter.api.Test;
-import ru.ssau.tk.kasimovserzhantov.labsoop.lab.exceptions.ArrayIsNotSortedException;
-import ru.ssau.tk.kasimovserzhantov.labsoop.lab.exceptions.DifferentLengthOfArraysException;
-import ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.coredefenitions.abstractclasses.AbstractTabulatedFunction;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;

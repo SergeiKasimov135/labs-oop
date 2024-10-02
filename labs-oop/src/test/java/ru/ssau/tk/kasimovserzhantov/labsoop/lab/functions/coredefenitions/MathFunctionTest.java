@@ -1,6 +1,7 @@
 package ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.coredefenitions;
 
 import org.junit.jupiter.api.Test;
+import ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.coredefenitions.interfaces.MathFunction;
 import ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.implementations.SqrFunction;
 import ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.implementations.IdentityFunction;
 

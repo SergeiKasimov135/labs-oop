@@ -1,9 +1,9 @@
 package ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.implementations;
 
-import ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.coredefenitions.AbstractTabulatedFunction;
-import ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.coredefenitions.Insertable;
-import ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.coredefenitions.Removable;
-import ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.coredefenitions.MathFunction;
+import ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.coredefenitions.abstractclasses.AbstractTabulatedFunction;
+import ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.coredefenitions.interfaces.Insertable;
+import ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.coredefenitions.interfaces.Removable;
+import ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.coredefenitions.interfaces.MathFunction;
 
 public class LinkedListTabulatedFunction extends AbstractTabulatedFunction implements Insertable, Removable {
 
