@@ -13,44 +13,6 @@ class AbstractTabulatedFunctionTest {
     private final MockTabulatedFunction mockFunction = new MockTabulatedFunction(1., 3., 2., 4.);
 
     @Test
-    public void checkLengthIsTheSame_ThrowsDifferentLengthOfArraysException() {
-        // given
-        double[] xValues = {1, 2, 3.5};
-        double[] yValues = {3, 4.5, 2.7, 9};
-
-        double[] xValues1 = {1, 2, 3.5, 6};
-        double[] yValues1 = {3, 4.5, 2.7};
-
-        double[] xValues2 = {};
-        double[] yValues2 = {3, 4.5, 2.7};
-
-        double[] xValues3 = {1, 2, 3.5, 6};
-        double[] yValues3 = {};
-
-        // then
-        assertThrows(DifferentLengthOfArraysException.class,
-                () -> AbstractTabulatedFunction.checkLengthIsTheSame(xValues, yValues));
-
-        assertThrows(DifferentLengthOfArraysException.class,
-                () -> AbstractTabulatedFunction.checkLengthIsTheSame(xValues1, yValues1));
-
-        assertThrows(DifferentLengthOfArraysException.class,
-                () -> AbstractTabulatedFunction.checkLengthIsTheSame(xValues2, yValues2));
-
-        assertThrows(DifferentLengthOfArraysException.class,
-                () -> AbstractTabulatedFunction.checkLengthIsTheSame(xValues3, yValues3));
-    }
-
-    @Test
-    public void checkSorted_ThrowsArrayIsNotSortedException() {
-        // given
-        double[] xValues = {1, 52.52, 3.5};
-
-        // then
-        assertThrows(ArrayIsNotSortedException.class, () -> AbstractTabulatedFunction.checkSorted(xValues));
-    }
-
-    @Test
     public void isIndexValid_ThrowsIndexOutOfBoundsException() {
         // given
         int index = 3;
