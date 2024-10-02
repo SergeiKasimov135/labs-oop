@@ -3,38 +3,35 @@ package ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.implementations;
 import ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.coredefenitions.interfaces.MathFunction;
 
 public class ChebyshevInterpolation implements MathFunction {
+    private final MathFunction function;
+    private final double[] nodes;
+    private int n;
+    private double a;
+    private double b;
 
-    private final double[] coefficients;
-    private final int degree;
-
-    public ChebyshevInterpolation(double[] coefficients) {
-        this.coefficients = coefficients;
-        this.degree = coefficients.length - 1;
+    public ChebyshevInterpolation(MathFunction function, double a, double b, int n) {
+        this.function = function;
+        this.n = n;
+        this.a = a;
+        this.b = b;
+        nodes = new double[n + 1];
+        for (int i = 0; i <= n; i++) {
+            nodes[i] =  (b - a) / 2 * Math.cos(Math.PI * (2 * i + 1) / (2 * n + 2)) + (a + b) / 2;
+        }
     }
 
     @Override
     public double apply(double x) {
         double result = 0;
-        for (int i = 0; i <= degree; ++i) {
-            result += coefficients[i] * chebyshevPolynomial(i, x);
+        for (int j = 0; j < nodes.length; j++) {
+            double lagrangeBasisPolynomial = function.apply(nodes[j]);
+            for (int k = 0; k < nodes.length; k++) {
+                if (k != j) {
+                    lagrangeBasisPolynomial *= (x - nodes[k]) / (nodes[j] - nodes[k]);
+                }
+            }
+            result += lagrangeBasisPolynomial;
         }
-
         return result;
-    }
-
-    private double chebyshevPolynomial(int n, double x) {
-        if (n == 0)
-            return 1;
-        if (n == 1)
-            return x;
-        return 2 * x * chebyshevPolynomial(n - 1, x) - chebyshevPolynomial(n - 2, x);
-    }
-
-    public double[] getCoefficients() {
-        return coefficients;
-    }
-
-    public int getDegree() {
-        return degree;
     }
 }
