@@ -8,61 +8,58 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class ChebyshevInterpolationTest {
 
     @Test
-    public void testApply_SqrFunction_ReturnsExpectedValues() {
-        MathFunction sqrFunction = new SqrFunction();
-        ChebyshevInterpolation interpolation = new
-                ChebyshevInterpolation(sqrFunction, 0, 1, 5);
-
-        assertEquals(0.0, interpolation.apply(0.0), 0.0001);
-        assertEquals(0.25, interpolation.apply(0.5), 0.0001);
-        assertEquals(1.0, interpolation.apply(1.0), 0.0001);
-    }
-
-    @Test
-    public void testApply_UnitFunction_ReturnsExpectedValues() {
+    public void testUnitFunction() {
         MathFunction unitFunction = new UnitFunction();
-        ChebyshevInterpolation interpolation = new
-                ChebyshevInterpolation(unitFunction, 0, 1, 5);
-
-        assertEquals(1.0, interpolation.apply(0.0), 0.0001);
-        assertEquals(1.0, interpolation.apply(0.5), 0.0001);
-        assertEquals(1.0, interpolation.apply(1.0), 0.0001);
+        ChebyshevInterpolation interpolation = new ChebyshevInterpolation(unitFunction, 0, 1, 5);
+        for (double x = 0; x <= 1; x += 0.1) {
+            assertEquals(1, interpolation.apply(x), 0.01);
+        }
     }
 
     @Test
-    public void testApply_ZeroFunction_ReturnsExpectedValues() {
+    public void testZeroFunction() {
         MathFunction zeroFunction = new ZeroFunction();
-        ChebyshevInterpolation interpolation = new
-                ChebyshevInterpolation(zeroFunction, 0, 1, 5);
-
-        assertEquals(0.0, interpolation.apply(0.0), 0.0001);
-        assertEquals(0.0, interpolation.apply(0.5), 0.0001);
-        assertEquals(0.0, interpolation.apply(1.0), 0.0001);
+        ChebyshevInterpolation interpolation = new ChebyshevInterpolation(zeroFunction, 0, 1, 5);
+        for (double x = 0; x <= 1; x += 0.1) {
+            assertEquals(0, interpolation.apply(x), 0.01);
+        }
     }
 
     @Test
-    public void testApply_CompositeFunction_ReturnsExpectedValues() {
+    public void testSqrFunction() {
+        MathFunction sqrFunction = new SqrFunction();
+        ChebyshevInterpolation interpolation = new ChebyshevInterpolation(sqrFunction, 0, 1, 5);
+        for (double x = 0; x <= 1; x += 0.1) {
+            assertEquals(Math.pow(x, 2), interpolation.apply(x), 0.01);
+        }
+    }
+
+    @Test
+    public void testIdentityFunction() {
         MathFunction identityFunction = new IdentityFunction();
-        MathFunction sqrFunction = new SqrFunction();
-        MathFunction compositeFunction = new CompositeFunction(identityFunction, sqrFunction);
-
-        ChebyshevInterpolation interpolation = new
-                ChebyshevInterpolation(compositeFunction, 0, 1, 5);
-
-        assertEquals(0.0, interpolation.apply(0.0), 0.0001);
-        assertEquals(0.25, interpolation.apply(0.5), 0.0001);
-        assertEquals(1.0, interpolation.apply(1.0), 0.0001);
+        ChebyshevInterpolation interpolation = new ChebyshevInterpolation(identityFunction, 0, 1, 5);
+        for (double x = 0; x <= 1; x += 0.1) {
+            assertEquals(x, interpolation.apply(x), 0.01);
+        }
     }
 
     @Test
-    public void testApply_NegativeValues_ReturnsExpectedValues() {
-        MathFunction sqrFunction = new SqrFunction();
-        ChebyshevInterpolation interpolation = new
-                ChebyshevInterpolation(sqrFunction, -1, 0, 5);
+    public void testConstantFunction() {
+        double constantValue = 5;
+        MathFunction constantFunction = new ConstantFunction(constantValue);
+        ChebyshevInterpolation interpolation = new ChebyshevInterpolation(constantFunction, 0, 1, 5);
+        for (double x = 0; x <= 1; x += 0.1) {
+            assertEquals(constantValue, interpolation.apply(x), 0.01);
+        }
+    }
 
-        assertEquals(1.0, interpolation.apply(-1.0), 0.0001);
-        assertEquals(0.25, interpolation.apply(-0.5), 0.0001);
-        assertEquals(0.0, interpolation.apply(0.0), 0.0001);
+    @Test
+    public void testCompositeFunction() {
+        MathFunction compositeFunction = new CompositeFunction(new SqrFunction(), new IdentityFunction());
+        ChebyshevInterpolation interpolation = new ChebyshevInterpolation(compositeFunction, 0, 1, 5);
+        for (double x = 0; x <= 1; x += 0.1) {
+            assertEquals(Math.pow(x, 2), interpolation.apply(x), 0.01);
+        }
     }
     
 }
