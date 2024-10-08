@@ -1,6 +1,10 @@
 package ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.coredefenitions.interfaces;
 
-public interface TabulatedFunction extends MathFunction {
+import ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.coredefenitions.Point;
+
+import java.util.Iterator;
+
+public interface TabulatedFunction extends MathFunction, Iterable<Point> {
 
     int getCount();
 
@@ -17,5 +21,7 @@ public interface TabulatedFunction extends MathFunction {
     double leftBound();
 
     double rightBound();
+
+    Iterator<Point> iterator();
 
 }
