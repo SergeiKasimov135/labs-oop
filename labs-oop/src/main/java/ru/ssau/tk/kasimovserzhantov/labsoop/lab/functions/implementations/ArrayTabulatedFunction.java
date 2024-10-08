@@ -1,36 +1,38 @@
 package ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.implementations;
 
-
+import ru.ssau.tk.kasimovserzhantov.labsoop.lab.exceptions.InterpolationException;
+import ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.coredefenitions.Point;
 import ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.coredefenitions.interfaces.Insertable;
 import ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.coredefenitions.interfaces.Removable;
 import ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.coredefenitions.abstractclasses.AbstractTabulatedFunction;
 import ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.coredefenitions.interfaces.MathFunction;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
-public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements Insertable, Removable {
+public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements Insertable, Removable, Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1901617932477942620L;
 
     private double[] xValues;
     private double[] yValues;
     private int count;
 
     public ArrayTabulatedFunction(double[] xValues, double[] yValues) {
+        AbstractTabulatedFunction.checkLengthIsTheSame(xValues, yValues);
+        AbstractTabulatedFunction.checkSorted(xValues);
+
         if (xValues.length < 2) {
             throw new IllegalArgumentException("Array's length should be at least 2");
-        }
-
-        if (xValues.length != yValues.length) {
-            throw new IllegalArgumentException("Arrays must be the same length");
         }
 
         this.count = xValues.length;
         this.xValues = Arrays.copyOf(xValues, xValues.length);
         this.yValues = Arrays.copyOf(yValues, yValues.length);
-
-        for (int i = 1; i < xValues.length; ++i) {
-            if (xValues[i] < xValues[i - 1])
-                throw new IllegalArgumentException("Array must be sorted in increasing order");
-        }
     }
 
     public ArrayTabulatedFunction(MathFunction source, double xFrom, double xTo, int count) {
@@ -180,6 +182,26 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
     }
 
     @Override
+    public Iterator<Point> iterator() {
+        return new Iterator<Point>() {
+            private int i = 0;
+
+            @Override
+            public boolean hasNext() {
+                return i < count;
+            }
+
+            @Override
+            public Point next() {
+                if (!hasNext())
+                    throw new NoSuchElementException("");
+
+                return new Point(xValues[i], yValues[i++]);
+            }
+        };
+    }
+
+    @Override
     protected int floorIndexOfX(double x) {
         int index = Arrays.binarySearch(xValues, x);
         if (index >= 0) {
@@ -202,6 +224,9 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
 
     @Override
     protected double interpolate(double x, int floorIndex) {
+        if (x > xValues[floorIndex + 1] || x < xValues[floorIndex])
+            throw new InterpolationException("x is out of the interpolation interval");
+
         return interpolate(x, xValues[floorIndex], xValues[floorIndex + 1],
                 yValues[floorIndex], yValues[floorIndex + 1]);
     }
