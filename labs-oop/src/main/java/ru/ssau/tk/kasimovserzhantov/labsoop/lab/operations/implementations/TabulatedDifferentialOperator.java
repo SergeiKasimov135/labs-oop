@@ -1,5 +1,6 @@
 package ru.ssau.tk.kasimovserzhantov.labsoop.lab.operations.implementations;
 
+import ru.ssau.tk.kasimovserzhantov.labsoop.lab.concurrent.SynchronizedTabulatedFunction;
 import ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.coredefenitions.Point;
 import ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.coredefenitions.interfaces.TabulatedFunction;
 import ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.factory.ArrayTabulatedFunctionFactory;
@@ -22,21 +23,32 @@ public class TabulatedDifferentialOperator implements DifferentialOperator<Tabul
     @Override
     public TabulatedFunction derive(TabulatedFunction function) {
         Point[] points = TabulatedFunctionOperationService.asPoints(function);
-        double[] xValues = new double[points.length];
-        double[] yValues = new double[points.length];
 
-        double h = 0.00001;
-        for (int i = 1; i < points.length - 1; i++) {
-            xValues[i] = points[i].getX();
-            yValues[i] = (points[i + 1].getY() - points[i - 1].getY()) / (2 * h);
+        int pointsLength = points.length;
+        double[] xValues = new double[pointsLength];
+        double[] yValues = new double[pointsLength];
+
+        int index;
+        for (index = 0; index < pointsLength - 1; index++) {
+            xValues[index] = points[index].x;
+            yValues[index] = (points[index+1].y - points[index].y)/(points[index+1].x-points[index].x);
         }
-
-        xValues[0] = points[0].getX();
-        yValues[0] = (points[1].getY() - points[0].getY()) / h;
-        xValues[points.length - 1] = points[points.length - 1].getX();
-        yValues[points.length - 1] = (points[points.length - 1].getY() - points[points.length - 2].getY()) / h;
+        xValues[index] = points[index].x;
+        yValues[pointsLength - 1] = yValues[index - 1];
 
         return factory.create(xValues, yValues);
+    }
+
+    public TabulatedFunction deriveSynchronously(TabulatedFunction function) {
+        SynchronizedTabulatedFunction synchronizedTabulatedFunction;
+
+        if (function instanceof SynchronizedTabulatedFunction) {
+            synchronizedTabulatedFunction = (SynchronizedTabulatedFunction) function;
+        } else {
+            synchronizedTabulatedFunction = new SynchronizedTabulatedFunction(function);
+        }
+
+        return synchronizedTabulatedFunction.doSynchronously(this::derive);
     }
 
     public TabulatedFunctionFactory getFactory() {

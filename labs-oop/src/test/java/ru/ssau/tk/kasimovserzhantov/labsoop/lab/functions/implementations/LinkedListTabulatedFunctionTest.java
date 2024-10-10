@@ -1,7 +1,11 @@
 package ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.implementations;
 
 import org.junit.jupiter.api.Test;
+import ru.ssau.tk.kasimovserzhantov.labsoop.lab.exceptions.DifferentLengthOfArraysException;
+import ru.ssau.tk.kasimovserzhantov.labsoop.lab.exceptions.InterpolationException;
 import ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.coredefenitions.interfaces.MathFunction;
+
+import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -118,6 +122,7 @@ class LinkedListTabulatedFunctionTest {
         assertEquals(6, appliedValueAtRightBound, 0.0001);
     }
 
+
     @Test
     public void testApply_ExtrapolatedValues_ReturnsCorrectValues() {
         // given
@@ -140,7 +145,7 @@ class LinkedListTabulatedFunctionTest {
         double[] xValues = {1, 2, 3};
         double[] yValues = {4, 5, 6};
         LinkedListTabulatedFunction function = new LinkedListTabulatedFunction(xValues, yValues);
- 
+
         // when
         double appliedValueJustBelowLeftBound = function.apply(0.9999);
         double appliedValueJustAboveRightBound = function.apply(3.0001);
@@ -247,6 +252,7 @@ class LinkedListTabulatedFunctionTest {
         // when
         LinkedListTabulatedFunction function = new LinkedListTabulatedFunction(xValues, yValues);
 
+
         // then
         assertEquals(1, function.floorIndexOfX(2));
         assertEquals(1, function.floorIndexOfX(2.5));
@@ -336,15 +342,103 @@ class LinkedListTabulatedFunctionTest {
     }
 
     @Test
+    public void testInsert_DuplicateX_UpdatesYValue() {
+        // given
+        double[] xValues = {1, 2, 3};
+        double[] yValues = {4, 5, 6};
+
+        // when
+        LinkedListTabulatedFunction function = new LinkedListTabulatedFunction(xValues, yValues);
+        function.insert(2, 10);
+
+        // then
+        assertEquals(3, function.getCount());
+        assertEquals(10, function.getY(1), 0.0001);
+    }
+
+    @Test
+    public void testInsert_AtLeftBoundary() {
+        // given
+        double[] xValues = {1, 2, 3};
+        double[] yValues = {4, 5, 6};
+
+        // when
+        LinkedListTabulatedFunction function = new LinkedListTabulatedFunction(xValues, yValues);
+        function.insert(0, 3); // Inserting before the left bound
+
+        // then
+        assertEquals(4, function.getCount());
+        assertEquals(0, function.getX(0), 0.0001);
+        assertEquals(3, function.getY(0), 0.0001);
+    }
+
+    @Test
+    public void testFloorIndexOfX_OutOfBounds_ThrowsException() {
+        // given
+        double[] xValues = {1, 2, 3};
+        double[] yValues = {4, 5, 6};
+        LinkedListTabulatedFunction function = new LinkedListTabulatedFunction(xValues, yValues);
+
+
+        // then
+        assertThrows(IllegalArgumentException.class, () -> function.floorIndexOfX(0));
+    }
+
+    @Test
+    public void testInterpolate_OutsideInterpolationInterval_ThrowsException() {
+        // given
+        double[] xValues = {1, 2, 3};
+        double[] yValues = {4, 5, 6};
+        LinkedListTabulatedFunction function = new LinkedListTabulatedFunction(xValues, yValues);
+
+        // then
+        assertThrows(InterpolationException.class, () -> function.interpolate(0, 0));
+        assertThrows(InterpolationException.class, () -> function.interpolate(4, 1));
+    }
+
+
+    @Test
+    public void testIterator_WithElements() {
+        // given
+        double[] xValues = {1, 2, 3};
+        double[] yValues = {4, 5, 6};
+        LinkedListTabulatedFunction function = new LinkedListTabulatedFunction(xValues, yValues);
+        var iterator = function.iterator();
+
+        // then
+        assertTrue(iterator.hasNext());
+        assertEquals(1, iterator.next().getX());
+        assertEquals(5, iterator.next().getY());
+        assertTrue(iterator.hasNext());
+        assertEquals(3, iterator.next().getX());
+    }
+
+    @Test
+    public void testIterator_NextWithoutHasNext_ThrowsException() {
+        // given
+        double[] xValues = {1, 2, 3};
+        double[] yValues = {4, 5, 6};
+        LinkedListTabulatedFunction function = new LinkedListTabulatedFunction(xValues, yValues);
+        var iterator = function.iterator();
+
+        // when
+        iterator.next();
+        iterator.next();
+        iterator.next();
+
+        // then
+        assertThrows(NoSuchElementException.class, iterator::next);
+    }
+
+    // Invalid argument tests...
+
+    @Test
     public void testInvalidConstructorArguments_ThrowsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class,
                 () -> new LinkedListTabulatedFunction(new double[]{}, new double[]{}));
 
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(DifferentLengthOfArraysException.class,
                 () -> new LinkedListTabulatedFunction(new double[]{1}, new double[]{1, 2}));
-
-        assertThrows(IllegalArgumentException.class,
-                () -> new LinkedListTabulatedFunction(new double[]{2, 1}, new double[]{1, 2}));
 
         assertThrows(IllegalArgumentException.class,
                 () -> new LinkedListTabulatedFunction(null, 0, 1, 2));
@@ -392,5 +486,4 @@ class LinkedListTabulatedFunctionTest {
         assertThrows(IndexOutOfBoundsException.class, () -> function.remove(-1));
         assertThrows(IndexOutOfBoundsException.class, () -> function.remove(3));
     }
-
 }
