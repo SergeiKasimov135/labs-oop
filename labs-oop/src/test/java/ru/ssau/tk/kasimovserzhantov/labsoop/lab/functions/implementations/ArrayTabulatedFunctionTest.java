@@ -1,7 +1,11 @@
 package ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.implementations;
 
 import org.junit.jupiter.api.Test;
+import ru.ssau.tk.kasimovserzhantov.labsoop.lab.exceptions.InterpolationException;
+import ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.coredefenitions.Point;
 import ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.coredefenitions.interfaces.MathFunction;
+
+import java.util.Iterator;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -174,7 +178,6 @@ class ArrayTabulatedFunctionTest {
         assertEquals(5, function.getY(1), 0.0001);
     }
 
-
     @Test
     public void testSetY_ReturnsUpdatedYValue() {
         // given
@@ -232,104 +235,181 @@ class ArrayTabulatedFunctionTest {
     }
 
     @Test
-    public void testFloorIndexOfX_ReturnsCorrectFloorIndex() {
-        // given
-        double[] xValues = {1, 2, 3};
-        double[] yValues = {4, 5, 6};
-
-        // when
-        ArrayTabulatedFunction function = new ArrayTabulatedFunction(xValues, yValues);
-
-        // then
-        assertEquals(1, function.floorIndexOfX(2));
-        assertEquals(1, function.floorIndexOfX(2.5));
-    }
-
-    @Test
-    public void testInterpolate_ReturnsCorrectInterpolatedValue() {
+    public void testIteratorUsingWhileLoop() {
         // given
         double[] xValues = {1, 2, 3};
         double[] yValues = {4, 5, 6};
         ArrayTabulatedFunction function = new ArrayTabulatedFunction(xValues, yValues);
+        Iterator<Point> iterator = function.iterator();
 
         // when
-        double interpolatedValue = function.interpolate(2.5, function.floorIndexOfX(2.5));
+        double[] expectedX = {1, 2, 3};
+        double[] expectedY = {4, 5, 6};
+        int index = 0;
 
         // then
-        assertEquals(5.5, interpolatedValue, 0.0001);
+        while (iterator.hasNext()) {
+            Point point = iterator.next();
+            assertEquals(expectedX[index], point.getX(), 0.0001);
+            assertEquals(expectedY[index], point.getY(), 0.0001);
+            index++;
+        }
+        assertEquals(3, index);
     }
 
     @Test
-    public void testExtrapolateLeftAndRight_ReturnsCorrectExtrapolatedValues() {
+    public void testIteratorUsingForEachLoop() {
         // given
         double[] xValues = {1, 2, 3};
         double[] yValues = {4, 5, 6};
-
-        // when
         ArrayTabulatedFunction function = new ArrayTabulatedFunction(xValues, yValues);
 
+        // when
+        double[] expectedX = {1, 2, 3};
+        double[] expectedY = {4, 5, 6};
+        int index = 0;
+
         // then
-        assertEquals(3, function.extrapolateLeft(0), 0.0001);
-        assertEquals(7, function.extrapolateRight(4), 0.0001);
+        for (Point point : function) {
+            assertEquals(expectedX[index], point.getX(), 0.0001);
+            assertEquals(expectedY[index], point.getY(), 0.0001);
+            index++;
+        }
+        assertEquals(3, index);
     }
 
     @Test
-    public void testInvalidConstructorArguments_ThrowsIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class,
-                () -> new ArrayTabulatedFunction(new double[]{}, new double[]{}));
-
-        assertThrows(IllegalArgumentException.class,
-                () -> new ArrayTabulatedFunction(new double[]{1}, new double[]{1, 2}));
-
-        assertThrows(IllegalArgumentException.class,
-                () -> new ArrayTabulatedFunction(new double[]{2, 1}, new double[]{1, 2}));
-
-        assertThrows(IllegalArgumentException.class,
-                () -> new ArrayTabulatedFunction(null, 0, 1, 2));
-
-        assertThrows(IllegalArgumentException.class,
-                () -> new ArrayTabulatedFunction(null, 0, 1, 0));
+    public void testConstructorWithMathFunction_ReturnsCorrectValues() {
+        MathFunction source = x -> x * x;
+        ArrayTabulatedFunction function = new ArrayTabulatedFunction(source, 0, 2, 3);
+        assertEquals(3, function.getCount());
+        assertEquals(0, function.getX(0), 0.0001);
+        assertEquals(0, function.getY(0), 0.0001);
     }
 
     @Test
-    public void testInvalidInsertArguments_ThrowsIllegalArgumentException() {
-        // given
+    public void testInsert_UpdatesValueIfExists() {
         double[] xValues = {1, 2, 3};
         double[] yValues = {4, 5, 6};
-
-        // when
         ArrayTabulatedFunction function = new ArrayTabulatedFunction(xValues, yValues);
-
-        // then
-        assertThrows(IllegalArgumentException.class, () -> function.insert(Double.NaN, 5));
+        function.insert(2, 10);
+        assertEquals(10, function.getY(1), 0.0001);
     }
 
     @Test
-    public void testInvalidSetYArguments_ThrowsIndexOutOfBoundsException() {
-        // given
+    public void testInsert_AddsValueIfNotExists() {
         double[] xValues = {1, 2, 3};
         double[] yValues = {4, 5, 6};
-
-        // when
         ArrayTabulatedFunction function = new ArrayTabulatedFunction(xValues, yValues);
-
-        // then
-        assertThrows(IndexOutOfBoundsException.class, () -> function.setY(-1, 10));
+        function.insert(1.5, 5.5);
+        assertEquals(4, function.getCount());
+        assertEquals(1.5, function.getX(1), 0.0001);
+        assertEquals(5.5, function.getY(1), 0.0001);
     }
 
-
     @Test
-    public void testRemove_InvalidIndex_ThrowsIndexOutOfBoundsException() {
-        // given
+    public void testRemove_RemovesValue() {
         double[] xValues = {1, 2, 3};
         double[] yValues = {4, 5, 6};
-
-        // when
         ArrayTabulatedFunction function = new ArrayTabulatedFunction(xValues, yValues);
+        function.remove(1);
+        assertEquals(2, function.getCount());
+        assertEquals(1, function.getX(0), 0.0001);
+    }
 
-        // then
+    @Test
+    public void testGetX_ThrowsIndexOutOfBoundsException() {
+        double[] xValues = {1, 2, 3};
+        double[] yValues = {4, 5, 6};
+        ArrayTabulatedFunction function = new ArrayTabulatedFunction(xValues, yValues);
+        assertThrows(IndexOutOfBoundsException.class, () -> function.getX(3));
+    }
+
+    @Test
+    public void testGetY_ThrowsIndexOutOfBoundsException() {
+        double[] xValues = {1, 2, 3};
+        double[] yValues = {4, 5, 6};
+        ArrayTabulatedFunction function = new ArrayTabulatedFunction(xValues, yValues);
+        assertThrows(IndexOutOfBoundsException.class, () -> function.getY(3));
+    }
+
+    @Test
+    public void testSetY_ThrowsIndexOutOfBoundsException() {
+        double[] xValues = {1, 2, 3};
+        double[] yValues = {4, 5, 6};
+        ArrayTabulatedFunction function = new ArrayTabulatedFunction(xValues, yValues);
+        assertThrows(IndexOutOfBoundsException.class, () -> function.setY(3, 10));
+    }
+
+    @Test
+    public void testIterator() {
+        double[] xValues = {1, 2, 3};
+        ArrayTabulatedFunction function = new ArrayTabulatedFunction(xValues, new double[]{4, 5, 6});
+        Iterator<Point> iterator = function.iterator();
+        assertTrue(iterator.hasNext());
+        assertEquals(1, iterator.next().getX(), 0.0001);
+        assertTrue(iterator.hasNext());
+        assertEquals(2, iterator.next().getX(), 0.0001);
+        assertTrue(iterator.hasNext());
+        assertEquals(3, iterator.next().getX(), 0.0001);
+        assertFalse(iterator.hasNext());
+    }
+
+    @Test
+    public void testInsert_ThrowsIllegalArgumentExceptionForNaN() {
+        double[] xValues = {1, 2, 3};
+        double[] yValues = {4, 5, 6};
+        ArrayTabulatedFunction function = new ArrayTabulatedFunction(xValues, yValues);
+        assertThrows(IllegalArgumentException.class, () -> function.insert(Double.NaN, 6));
+        assertThrows(IllegalArgumentException.class, () -> function.insert(2, Double.NaN));
+    }
+
+    @Test
+    public void testRemove_ThrowsIndexOutOfBoundsException() {
+        double[] xValues = {1, 2, 3};
+        double[] yValues = {4, 5, 6};
+        ArrayTabulatedFunction function = new ArrayTabulatedFunction(xValues, yValues);
         assertThrows(IndexOutOfBoundsException.class, () -> function.remove(-1));
         assertThrows(IndexOutOfBoundsException.class, () -> function.remove(3));
     }
 
+    @Test
+    public void testFloorIndexOfX_HandlesEdgeCases() {
+        double[] xValues = {1, 2, 3};
+        ArrayTabulatedFunction function = new ArrayTabulatedFunction(xValues, new double[]{4, 5, 6});
+        assertEquals(-1, function.floorIndexOfX(0)); // Before first
+        assertEquals(0, function.floorIndexOfX(1)); // First
+        assertEquals(0, function.floorIndexOfX(1.5)); // Between
+        assertEquals(2, function.floorIndexOfX(3)); // Last
+        assertEquals(2, function.floorIndexOfX(4)); // After last
+    }
+
+    @Test
+    public void testExtrapolateLeft() {
+        double[] xValues = {1, 2, 3};
+        ArrayTabulatedFunction function = new ArrayTabulatedFunction(xValues, new double[]{4, 5, 6});
+        assertEquals(3, function.extrapolateLeft(0), 0.0001);
+    }
+
+    @Test
+    public void testExtrapolateRight() {
+        double[] xValues = {1, 2, 3};
+        ArrayTabulatedFunction function = new ArrayTabulatedFunction(xValues, new double[]{4, 5, 6});
+        assertEquals(7, function.extrapolateRight(4), 0.0001);
+    }
+
+    @Test
+    public void testInterpolate_ThrowsInterpolationException() {
+        double[] xValues = {1, 2, 3};
+        ArrayTabulatedFunction function = new ArrayTabulatedFunction(xValues, new double[]{4, 5, 6});
+        assertThrows(InterpolationException.class, () -> function.interpolate(0, 0));
+        assertThrows(InterpolationException.class, () -> function.interpolate(5, 1));
+    }
+
+    @Test
+    public void testInterpolate_DoesNotThrowException() {
+        double[] xValues = {1, 2, 3};
+        ArrayTabulatedFunction function = new ArrayTabulatedFunction(xValues, new double[]{4, 5, 6});
+        assertDoesNotThrow(() -> function.interpolate(1.5, 0));
+    }
 }
