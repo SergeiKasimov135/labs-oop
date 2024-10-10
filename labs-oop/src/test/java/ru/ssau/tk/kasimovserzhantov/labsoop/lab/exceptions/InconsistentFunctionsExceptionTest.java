@@ -8,7 +8,7 @@ class InconsistentFunctionsExceptionTest {
     @Test
     void testDefaultConstructor() {
         InconsistentFunctionsException exception = new InconsistentFunctionsException();
-        assertNotNull(exception); // Проверка, что исключение не null
+        assertNotNull(exception); 
     }
 
     @Test
@@ -16,7 +16,7 @@ class InconsistentFunctionsExceptionTest {
         String message = "Обнаружены несоответствующие функции.";
         InconsistentFunctionsException exception = new InconsistentFunctionsException(message);
 
-        assertNotNull(exception); // Проверка, что исключение не null
-        assertEquals(message, exception.getMessage()); // Проверка, что сообщение соответствует ожидаемому
+        assertNotNull(exception); 
+        assertEquals(message, exception.getMessage()); 
     }
 }

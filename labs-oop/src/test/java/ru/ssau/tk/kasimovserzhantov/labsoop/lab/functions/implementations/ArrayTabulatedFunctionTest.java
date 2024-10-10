@@ -377,11 +377,11 @@ class ArrayTabulatedFunctionTest {
     public void testFloorIndexOfX_HandlesEdgeCases() {
         double[] xValues = {1, 2, 3};
         ArrayTabulatedFunction function = new ArrayTabulatedFunction(xValues, new double[]{4, 5, 6});
-        assertEquals(-1, function.floorIndexOfX(0)); // Before first
-        assertEquals(0, function.floorIndexOfX(1)); // First
-        assertEquals(0, function.floorIndexOfX(1.5)); // Between
-        assertEquals(2, function.floorIndexOfX(3)); // Last
-        assertEquals(2, function.floorIndexOfX(4)); // After last
+        assertEquals(-1, function.floorIndexOfX(0)); 
+        assertEquals(0, function.floorIndexOfX(1)); 
+        assertEquals(0, function.floorIndexOfX(1.5)); 
+        assertEquals(2, function.floorIndexOfX(3)); 
+        assertEquals(2, function.floorIndexOfX(4)); 
     }
 
     @Test
