@@ -90,4 +90,19 @@ public final class FunctionsIO {
         ObjectInputStream objectOutputStream = new ObjectInputStream(stream);
         return (TabulatedFunction) objectOutputStream.readObject();
     }
+
+    public static void serializeJson(BufferedWriter writer, ArrayTabulatedFunction function) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+
+        String json = mapper.writeValueAsString(function);
+        writer.write(json);
+
+        writer.flush();
+    }
+
+    public static ArrayTabulatedFunction deserializeJson(BufferedReader reader) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        
+        return mapper.readValue(reader, ArrayTabulatedFunction.class);
+    }
 }
