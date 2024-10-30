@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: labs-oop
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: labber
+    password: labber
+    url: jdbc:postgresql://localhost:5432/labsdb
+    
+  jpa:
+    show-sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
