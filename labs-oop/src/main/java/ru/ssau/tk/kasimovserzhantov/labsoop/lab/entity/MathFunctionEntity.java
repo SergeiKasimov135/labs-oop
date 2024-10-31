@@ -16,7 +16,7 @@ import java.util.List;
 public class MathFunctionEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(name = "c_function_type")
