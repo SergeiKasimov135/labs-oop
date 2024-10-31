@@ -14,11 +14,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class MathFunctionService {
 
-//    private final static String CREATE_QUERY_FILE = "create_function.sql";
-//    private static final String READ_QUERY_FILE = "read_function.sql";
-//    private static final String UPDATE_QUERY_FILE = "update_function.sql";
-//    private static final String DELETE_QUERY_FILE = "delete_function.sql";
-
     private final MathFunctionRepository mathFunctionRepository;
 
     public List<MathFunctionDTO> getByFunctionType(String functionType) {
