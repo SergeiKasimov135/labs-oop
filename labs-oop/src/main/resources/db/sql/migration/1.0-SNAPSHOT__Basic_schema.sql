@@ -13,5 +13,5 @@ create table labs.t_point(
     function_id integer,
     c_x_value double precision,
     c_y_value double precision,
-    foreign key (function_id) references labs.t_math_function(id) on delete cascade
+    foreign key (function_id) references labs.t_function(id) on delete cascade
 );
