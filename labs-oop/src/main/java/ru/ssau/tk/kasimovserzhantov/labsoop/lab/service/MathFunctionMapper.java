@@ -1,38 +1,41 @@
 package ru.ssau.tk.kasimovserzhantov.labsoop.lab.service;
 
+import org.mapstruct.*;
 import ru.ssau.tk.kasimovserzhantov.labsoop.lab.dto.MathFunctionDTO;
+import ru.ssau.tk.kasimovserzhantov.labsoop.lab.dto.PointDTO;
 import ru.ssau.tk.kasimovserzhantov.labsoop.lab.entity.MathFunctionEntity;
+import ru.ssau.tk.kasimovserzhantov.labsoop.lab.entity.PointEntity;
 
-public class MathFunctionMapper {
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
-    public static MathFunctionDTO functionEntityToDTO(MathFunctionEntity entity) {
-        if (entity == null) {
-            return null;
+@Mapper(componentModel = "spring", uses = {PointMapper.class})
+public interface MathFunctionMapper {
+
+    @Mapping(target = "points")
+    MathFunctionEntity toEntity(MathFunctionDTO dto);
+
+    MathFunctionDTO toDTO(MathFunctionEntity entity);
+
+    @AfterMapping
+    default void mapPoints(@MappingTarget MathFunctionEntity entity, MathFunctionDTO dto,
+                           @Context PointMapper pointMapper) {
+        if (dto.getPoints() != null) {
+            if (entity.getPoints() == null) {
+                entity.setPoints(new ArrayList<>());
+            }
+            entity.getPoints().addAll(dto.getPoints().stream()
+                    .map(pointDTO -> pointMapper.toEntityWithFunction(pointDTO, entity))
+                    .collect(Collectors.toList()));
         }
-
-        MathFunctionDTO dto = new MathFunctionDTO();
-        dto.setId(entity.getId());
-        dto.setFunctionType(entity.getFunctionType());
-        dto.setCount(entity.getCount());
-        dto.setXFrom(entity.getXFrom() != null ? entity.getXFrom() : 0.0);
-        dto.setXTo(entity.getXTo() != null ? entity.getXTo() : 0.0);
-
-        return dto;
     }
 
-    public static MathFunctionEntity functionDTOToFunctionEntity(MathFunctionDTO dto) {
-        if (dto == null) {
-            return null;
-        }
-
-        MathFunctionEntity entity = new MathFunctionEntity();
-        entity.setId(dto.getId());
-        entity.setFunctionType(dto.getFunctionType());
-        entity.setCount(dto.getCount());
-        entity.setXFrom(dto.getXFrom());
-        entity.setXTo(dto.getXTo());
-
-        return entity;
+    default PointEntity toEntityWithFunction(PointDTO pointDTO, MathFunctionEntity functionEntity) {
+        PointEntity pointEntity = new PointEntity();
+        pointEntity.setXValue(pointDTO.getXValue());
+        pointEntity.setYValue(pointDTO.getYValue());
+        pointEntity.setFunctionEntity(functionEntity);
+        return pointEntity;
     }
 
 }

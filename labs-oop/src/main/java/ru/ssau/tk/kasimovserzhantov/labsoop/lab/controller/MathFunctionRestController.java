@@ -10,16 +10,19 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("lab/math-functions/")
+@RequestMapping("lab/math-functions")
 public class MathFunctionRestController {
 
     private final MathFunctionService mathFunctionService;
 
     @GetMapping("list")
-    public ResponseEntity<List<MathFunctionDTO>> findAllFunctions(@RequestParam String functionType) {
+    public ResponseEntity<List<MathFunctionDTO>> findAllFunctions(
+            @RequestParam(name = "functionType", required = false) String functionType
+    ) {
         List<MathFunctionDTO> functionDTOList = this.mathFunctionService.findAllFunctions(functionType);
-        if (functionDTOList == null)
-            return ResponseEntity.notFound().build();
+        if (functionDTOList.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
 
         return ResponseEntity.ok(functionDTOList);
     }

@@ -1,34 +1,23 @@
 package ru.ssau.tk.kasimovserzhantov.labsoop.lab.service;
 
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import ru.ssau.tk.kasimovserzhantov.labsoop.lab.dto.PointDTO;
+import ru.ssau.tk.kasimovserzhantov.labsoop.lab.entity.MathFunctionEntity;
 import ru.ssau.tk.kasimovserzhantov.labsoop.lab.entity.PointEntity;
 
-public class PointMapper {
+@Mapper(componentModel = "spring")
+public interface PointMapper {
 
-    public static PointDTO pointEntityToDTO(PointEntity entity) {
-        if (entity == null) {
-            return null;
-        }
+    @Mapping(target = "functionEntity", ignore = true)
+    PointEntity toEntity(PointDTO dto);
 
-        PointDTO dto = new PointDTO();
-        dto.setId(entity.getId());
-        dto.setFunctionId(entity.getFunctionEntity() != null ? entity.getFunctionEntity().getId() : 0);
-        dto.setXValue(entity.getXValue() != null ? entity.getXValue() : 0.0);
-        dto.setYValue(entity.getYValue() != null ? entity.getYValue() : 0.0);
+    @Mapping(source = "functionEntity.id", target = "functionId")
+    PointDTO toDTO(PointEntity entity);
 
-        return dto;
-    }
-
-    public static PointEntity pointDTOToPointEntity(PointDTO dto) {
-        if (dto == null) {
-            return null;
-        }
-
-        PointEntity entity = new PointEntity();
-        entity.setId(dto.getId());
-        entity.setXValue(dto.getXValue());
-        entity.setYValue(dto.getYValue());
-
+    default PointEntity toEntityWithFunction(PointDTO dto, MathFunctionEntity functionEntity) {
+        PointEntity entity = toEntity(dto);
+        entity.setFunctionEntity(functionEntity);
         return entity;
     }
 

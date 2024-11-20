@@ -1,29 +1,33 @@
 package ru.ssau.tk.kasimovserzhantov.labsoop.lab.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
-@Table(name = "labs.t_point")
+@Table(schema = "labs", name = "t_point")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString(exclude = "functionEntity")
 public class PointEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
 
-    @ManyToOne
-    @JoinColumn(name = "function_id", nullable = false)
-    private MathFunctionEntity functionEntity;
-
     @Column(name = "c_x_value")
-    private Double xValue;
+    private double xValue;
 
     @Column(name = "c_y_value")
-    private Double yValue;
+    private double yValue;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "function_id", nullable = false)
+    @JsonBackReference
+    private MathFunctionEntity functionEntity;
 
 }

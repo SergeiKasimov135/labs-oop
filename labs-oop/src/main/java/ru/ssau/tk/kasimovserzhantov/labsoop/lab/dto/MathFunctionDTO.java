@@ -15,11 +15,11 @@ public class MathFunctionDTO {
 
     private String functionType;
 
-    private int count;
+    private Integer count;
 
-    private double xFrom;
+    private Double xFrom;
 
-    private double xTo;
+    private Double xTo;
 
     private List<PointDTO> points;
 

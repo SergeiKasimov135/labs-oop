@@ -19,7 +19,9 @@ public class PointService {
 
     private final MathFunctionRepository mathFunctionRepository;
 
-    public List<PointDTO> findByFunctionEntity(int functionId) {
+    private final PointMapper pointMapper;
+
+    public List<PointDTO> findAllPoints(int functionId) {
         MathFunctionEntity function = this.mathFunctionRepository.findById(functionId).orElse(null);
         if (function == null) {
             return null;
@@ -27,28 +29,40 @@ public class PointService {
 
         return this.pointRepository.findByFunctionEntity(function)
                 .stream()
-                .map(PointMapper::pointEntityToDTO)
+                .map(pointMapper::toDTO)
                 .collect(Collectors.toList());
     }
 
     public PointDTO create(PointDTO pointDTO) {
-        PointEntity point = PointMapper.pointDTOToPointEntity(pointDTO);
-        PointEntity newPoint = this.pointRepository.save(point);
+        MathFunctionEntity functionEntity = mathFunctionRepository.findById(pointDTO.getFunctionId())
+                .orElseThrow(() -> new IllegalArgumentException("Function with ID " + pointDTO.getFunctionId() + " not found"));
 
-        return PointMapper.pointEntityToDTO(newPoint);
+        functionEntity.setCount(functionEntity.getCount() + 1);
+        mathFunctionRepository.save(functionEntity);
+
+        PointEntity point = pointMapper.toEntityWithFunction(pointDTO, functionEntity);
+        PointEntity newPoint = pointRepository.save(point);
+
+        return pointMapper.toDTO(newPoint);
     }
 
     public PointDTO read(int id) {
         return this.pointRepository.findById(id)
-                .map(PointMapper::pointEntityToDTO)
+                .map(pointMapper::toDTO)
                 .orElse(null);
     }
 
     public PointDTO update(PointDTO pointDTO) {
-        PointEntity point = PointMapper.pointDTOToPointEntity(pointDTO);
-        PointEntity editedPoint = this.pointRepository.save(point);
+        PointEntity existingPoint = pointRepository.findById(pointDTO.getId())
+                .orElseThrow(() ->
+                        new IllegalArgumentException("Point with ID " + pointDTO.getId() + " not found"));
 
-        return PointMapper.pointEntityToDTO(editedPoint);
+        existingPoint.setXValue(pointDTO.getXValue());
+        existingPoint.setYValue(pointDTO.getYValue());
+
+        PointEntity editedPoint = this.pointRepository.save(existingPoint);
+
+        return pointMapper.toDTO(editedPoint);
     }
 
     public void delete(int id) {

@@ -1,6 +1,5 @@
 package ru.ssau.tk.kasimovserzhantov.labsoop.lab.controller;
 
-import com.fasterxml.classmate.members.ResolvedParameterizedMember;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("lab/points/")
+@RequestMapping("lab/points")
 public class PointRestController {
 
     private final PointService pointService;
