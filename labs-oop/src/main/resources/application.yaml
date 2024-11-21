@@ -7,9 +7,15 @@ spring:
     username: labber
     password: labber
     url: jdbc:postgresql://localhost:5432/labsdb
-    
   jpa:
     show-sql: true
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update
+
+jwt:
+  secret: secret
+  expirationMs: 36000000
+
+server:
+  port: 8080
