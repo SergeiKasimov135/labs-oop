@@ -15,6 +15,7 @@ import ru.ssau.tk.kasimovserzhantov.labsoop.lab.security.JwtResponse;
 import ru.ssau.tk.kasimovserzhantov.labsoop.lab.security.JwtUtils;
 import ru.ssau.tk.kasimovserzhantov.labsoop.lab.security.LoginRequest;
 
+@Deprecated
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("lab/auth")

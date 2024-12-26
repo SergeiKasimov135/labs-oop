@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Создать табулированную функцию</title>
+</head>
+<body>
+
+<br>
+<a href="/">Вернуться в главное меню</a>
+
+<div th:if="${showError}">
+    <div th:replace="fragments/errorForm"></div>
+    <script>
+        document.getElementById("errorForm").style.display = "block";
+    </script>
+</div>
+</body>
+</html>

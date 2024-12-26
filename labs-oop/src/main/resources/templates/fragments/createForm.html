@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Табулированные функции</title>
+    <meta charset="UTF-8">
+    <style>
+        #modalCreate{
+            background: #2e2e2e;
+        }
+        #title{
+            font-weight: bold;
+            font-size: 24px;
+            color: #4682B4;
+            font-family: Tahoma, sans-serif;
+            text-align: center;
+        }
+        #factoryType{
+            font-family: Tahoma, sans-serif;
+            color: white;
+            font-size: 14px;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        #points{
+            background-color: #f4ffcc;
+            border: none;
+            border-radius: 25px;
+            padding-left: 15px;
+            font-size: 16px;
+            font-family: Tahoma, sans-serif;
+            color: #252525;
+            width: 380px;
+            height: 35px;
+            margin-top: 10px;
+            margin-bottom: 15px;
+        }
+        #generateTable{
+            border: none;
+            border-radius: 25px;
+            float: left;
+            font-family: Tahoma, sans-serif;
+            margin-top: 5px;
+            font-size: 14px;
+            background-color: #4682B4;
+            color: #2e2e2e;
+            font-weight: bold;
+            width: 220px;
+            height: 35px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #generateTable:hover {
+            background-color: #4682B4;
+        }
+    </style>
+</head>
+<body>
+<div id = "modalCreate">
+    <div><h1 id="title">Создание функции</h1></div>
+    <div>
+        <p th:utext=" 'Текущая фабрика: <br>' + ${factory}" id="factoryType"></p>
+    </div>
+    <div>
+        <form onsubmit="submitForm(event)">
+            <input type="hidden" name="target" th:value="${target}">
+            <input type="hidden" name="redirectTarget" th:value="${redirectTarget}">
+            <label for="points"></label>
+            <input type="number" placeholder="Количество точек" name="points" id="points" min="2" required>
+            <button type="submit" id="generateTable">Сгенерировать таблицу</button>
+        </form>
+        <button id="closeButtomCreateFunction" type="button" onclick="closeModal()">Закрыть</button>
+    </div>
+</div>
+</body>
+</html>

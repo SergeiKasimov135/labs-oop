@@ -47,7 +47,7 @@ public class PointRestController {
         return ResponseEntity.ok(editedPoint);
     }
 
-    @DeleteMapping("{pointId:\\d+}")
+    @DeleteMapping("/{pointId:\\d+}")
     public ResponseEntity<Void> delete(@PathVariable int pointId) {
         this.pointService.delete(pointId);
 

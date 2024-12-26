@@ -1,12 +1,10 @@
 package ru.ssau.tk.kasimovserzhantov.labsoop.lab.concurrent;
 
-import ru.ssau.tk.kasimovserzhantov.labsoop.lab.exceptions.InterpolationException;
 import ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.coredefenitions.interfaces.TabulatedFunction;
 import ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.implementations.LinkedListTabulatedFunction;
 import ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.implementations.UnitFunction;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class MultiplyingTaskExecutor {

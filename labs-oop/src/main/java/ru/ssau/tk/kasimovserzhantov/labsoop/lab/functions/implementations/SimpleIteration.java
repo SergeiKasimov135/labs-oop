@@ -38,5 +38,4 @@ public class SimpleIteration implements MathFunction {
 
         return curr;
     }
-
 }

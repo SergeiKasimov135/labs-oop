@@ -1,5 +1,6 @@
 package ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.implementations;
 
+import lombok.Getter;
 import ru.ssau.tk.kasimovserzhantov.labsoop.lab.exceptions.InterpolationException;
 import ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.coredefenitions.Point;
 import ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.coredefenitions.abstractclasses.AbstractTabulatedFunction;
@@ -134,16 +135,6 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
 
     @Override
     public double apply(double x) {
-        if (count == 0) {
-            throw new IllegalArgumentException("Function is empty");
-        }
-
-        if (count == 1) {
-            if (x < leftBound() || x > rightBound()) {
-                throw new IllegalArgumentException("x is out of bounds");
-            }
-        }
-
         if (x < leftBound()) {
             return extrapolateLeft(x);
         } else if (x > rightBound()) {
@@ -168,11 +159,6 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
     public void insert(double x, double y) {
         if (Double.isNaN(x) || Double.isNaN(y))
             throw new IllegalArgumentException("X and Y should be a valid number");
-
-        if (count == 0) {
-            addNode(x, y);
-            return;
-        }
 
         int indexOfX = indexOfX(x);
         if (indexOfX != -1) {
@@ -252,6 +238,28 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
     @Override
     public void setY(int index, double value) {
         getNode(index).y = value;
+    }
+
+    @Override
+    public double[] getXValues() {
+        double[] xValues = new double[count];
+        Node currentNode = head;
+        for(int i = 0;i<count;i++){
+            xValues[i] = currentNode.x;
+            currentNode = currentNode.next;
+        }
+        return xValues;
+    }
+
+    @Override
+    public double[] getYValues() {
+        double[] yValues = new double[count];
+        Node currentNode = head;
+        for(int i = 0;i<count;i++){
+            yValues[i] = currentNode.y;
+            currentNode = currentNode.next;
+        }
+        return yValues;
     }
 
     @Override

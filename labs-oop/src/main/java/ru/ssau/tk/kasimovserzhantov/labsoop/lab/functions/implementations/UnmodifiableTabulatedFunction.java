@@ -6,6 +6,7 @@ import ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.coredefenitions.interf
 import java.util.Iterator;
 
 public class UnmodifiableTabulatedFunction implements TabulatedFunction {
+
     private final TabulatedFunction function;
 
     public UnmodifiableTabulatedFunction(TabulatedFunction function) {
@@ -30,6 +31,16 @@ public class UnmodifiableTabulatedFunction implements TabulatedFunction {
     @Override
     public void setY(int index, double value) {
         throw new UnsupportedOperationException("Modification is not allowed");
+    }
+
+    @Override
+    public double[] getXValues() {
+        return function.getXValues();
+    }
+
+    @Override
+    public double[] getYValues() {
+        return function.getYValues();
     }
 
     @Override
@@ -60,5 +71,15 @@ public class UnmodifiableTabulatedFunction implements TabulatedFunction {
     @Override
     public double apply(double x) {
         return function.apply(x);
+    }
+
+    @Override
+    public void insert(double x, double y) {
+        function.insert(x,y);
+    }
+
+    @Override
+    public void remove(int index) {
+        function.remove(index);
     }
 }

@@ -1,5 +1,9 @@
 package ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.implementations;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 import ru.ssau.tk.kasimovserzhantov.labsoop.lab.exceptions.InterpolationException;
 import ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.coredefenitions.Point;
 import ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.coredefenitions.interfaces.Insertable;
@@ -13,16 +17,25 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+@Getter
 public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements Insertable, Removable, Serializable {
 
     @Serial
     private static final long serialVersionUID = 1901617932477942620L;
 
+    @JsonFormat(shape = JsonFormat.Shape.ARRAY)
     private double[] xValues;
+
+    @JsonFormat(shape = JsonFormat.Shape.ARRAY)
     private double[] yValues;
+
     private int count;
 
-    public ArrayTabulatedFunction(double[] xValues, double[] yValues) {
+    @JsonCreator
+    public ArrayTabulatedFunction(
+            @JsonProperty(value = "xValues") double[] xValues,
+            @JsonProperty(value = "yValues") double[] yValues
+    ) {
         AbstractTabulatedFunction.checkLengthIsTheSame(xValues, yValues);
         AbstractTabulatedFunction.checkSorted(xValues);
 
@@ -124,16 +137,9 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
     public void remove(int index) {
         isIndexValid(index);
 
-        if (count == 1) {
-            xValues = null;
-            yValues = null;
-
-            count = 0;
-        } else {
-            System.arraycopy(xValues, index + 1, xValues, index, count - index - 1);
-            System.arraycopy(yValues, index + 1, yValues, index, count - index - 1);
-            count--;
-        }
+        System.arraycopy(xValues, index + 1, xValues, index, count - index - 1);
+        System.arraycopy(yValues, index + 1, yValues, index, count - index - 1);
+        count--;
     }
 
     @Override
@@ -194,7 +200,7 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
             @Override
             public Point next() {
                 if (!hasNext())
-                    throw new NoSuchElementException("");
+                    throw new NoSuchElementException();
 
                 return new Point(xValues[i], yValues[i++]);
             }

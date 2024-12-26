@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body{
+            font-family: Tahoma, sans-serif;
+        }
+        .modalAnother {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #2e2e2e;
+            border-radius: 30px;
+            padding: 20px;
+            border: 1px solid black;
+            display: none;
+            z-index: 1001;
+            width: 380px;
+            height: 450px;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 1000;
+        }
+
+        #modalSave {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #2e2e2e;
+            /*padding: 20px;*/
+            border: none;
+            border-radius: 25px;
+            width: 360px;
+            height: 170px;
+            font-family: Tahoma, sans-serif;
+            color: #4682B4;
+            font-weight: bold;
+            font-size: 24px;
+            text-align: center;
+            padding-top: 35px;
+            padding-left: 20px;
+            padding-right: 20px;
+            z-index: 1001;
+            align-items: center;
+        }
+        #modalEdit {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #2e2e2e;
+            /*padding: 20px;*/
+            border: none;
+            border-radius: 25px;
+            font-family: Tahoma, sans-serif;
+            color: #4682B4;
+            font-weight: bold;
+            font-size: 24px;
+            text-align: center;
+            padding-top: 35px;
+            padding-left: 20px;
+            padding-right: 20px;
+            align-items: center;
+            width: 360px;
+            height: 230px;
+            z-index: 1001;
+        }
+
+        #funcName{
+            width: 70%;
+            height: 40px;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            border-radius: 25px;
+            border: none;
+            padding-left: 20px;
+            background-color: #f4ffcc;
+            color: #6c6c6c;
+            font-size: 15px;
+            font-family: Tahoma, sans-serif;
+        }
+        #modalContentSave button{
+            width: 33%; /* Задайте ширину кнопки */
+            height: 40px;
+            border: none;
+            border-radius: 25px;
+            background-color: #4682B4;
+            color: #2e2e2e;
+            font-family: Tahoma, sans-serif;
+            font-size: 15px;
+            margin-bottom: 10px;
+            font-weight: bold;
+            text-align: center;
+            margin-left: 41px;
+            float: left;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #modalContentSave button:hover {
+            background-color: #4682B4;
+        }
+
+        #clooose{
+            width: 33%; /* Задайте ширину кнопки */
+            height: 40px;
+            border: none;
+            border-radius: 25px;
+            background-color: #DC143C;
+            color: white;
+            font-family: Tahoma, sans-serif;
+            font-size: 15px;
+            font-weight: bold;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #clooose:hover {
+            background-color: #DC143C;
+        }
+
+        #xValue{
+            width: 70%;
+            height: 40px;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            border-radius: 25px;
+            border: none;
+            padding-left: 20px;
+            background-color: #f4ffcc;
+            color: #6c6c6c;
+            font-size: 15px;
+            font-family: Tahoma, sans-serif;
+        }
+
+        #yValue{
+            width: 70%;
+            height: 40px;
+            margin-bottom: 15px;
+            border-radius: 25px;
+            border: none;
+            padding-left: 20px;
+            background-color: #f4ffcc;
+            color: #6c6c6c;
+            font-size: 15px;
+            font-family: Tahoma, sans-serif;
+        }
+
+        #modalEditContent button{
+            width: 33%; /* Задайте ширину кнопки */
+            height: 40px;
+            border: none;
+            border-radius: 25px;
+            background-color: #4682B4;
+            color: #2e2e2e;
+            font-family: Tahoma, sans-serif;
+            font-size: 15px;
+            margin-bottom: 10px;
+            font-weight: bold;
+            text-align: center;
+            margin-left: 41px;
+            float: left;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #modalEditContent button:hover {
+            background-color: #4682B4;
+        }
+
+        #closeEdit{
+            width: 33%; /* Задайте ширину кнопки */
+            height: 40px;
+            border: none;
+            border-radius: 25px;
+            background-color: #DC143C;
+            color: white;
+            font-family: Tahoma, sans-serif;
+            font-size: 15px;
+            font-weight: bold;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #closeEdit:hover {
+            background-color: #DC143C;
+        }
+
+        #modalRemove {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #2e2e2e;
+            /*padding: 20px;*/
+            border: none;
+            border-radius: 25px;
+            width: 360px;
+            height: 170px;
+            font-family: Tahoma, sans-serif;
+            color: #4682B4;
+            font-weight: bold;
+            font-size: 24px;
+            text-align: center;
+            padding-top: 35px;
+            padding-left: 20px;
+            padding-right: 20px;
+            z-index: 1001;
+            align-items: center;
+        }
+
+        #xToRemove{
+            width: 70%;
+            height: 40px;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            border-radius: 25px;
+            border: none;
+            padding-left: 20px;
+            background-color: #f4ffcc;
+            color: #6c6c6c;
+            font-size: 15px;
+            font-family: Tahoma, sans-serif;
+        }
+
+        #modalRemoveContent button{
+            width: 33%; /* Задайте ширину кнопки */
+            height: 40px;
+            border: none;
+            border-radius: 25px;
+            background-color: #4682B4;
+            color: #2e2e2e;
+            font-family: Tahoma, sans-serif;
+            font-size: 15px;
+            margin-bottom: 10px;
+            font-weight: bold;
+            text-align: center;
+            margin-left: 41px;
+            float: left;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #modalRemoveContent button:hover {
+            background-color: #4682B4;
+        }
+
+        #ccclose{
+            width: 33%; /* Задайте ширину кнопки */
+            height: 40px;
+            border: none;
+            border-radius: 25px;
+            background-color: #DC143C;
+            color: white;
+            font-family: Tahoma, sans-serif;
+            font-size: 15px;
+            font-weight: bold;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #closeEdit:hover {
+            background-color: #DC143C;
+        }
+
+        #modal {
+            display: none;
+            transform: translate(-50%, -50%);
+            background: #2e2e2e;
+            padding: 20px;
+            border: none;
+            border-radius: 25px;
+            width: 400px;
+            height: auto;
+            max-height: 60%;
+            z-index: 1001;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            overflow-y: auto;
+        }
+
+        #closeButtomCreateFunction{
+            text-align: center;
+            float: right;
+            margin-top: 5px;
+            margin-right: 1px;
+            margin-bottom: 10px;
+            background-color: #DC143C;
+            color: white;
+            font-family: Tahoma, sans-serif;
+            font-weight: bold;
+            font-size: 14px;
+            border: none;
+            border-radius: 25px;
+            height: 35px;
+            width: 130px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #closeButtomCreateFunction:hover {
+            background-color: #DC143C;
+        }
+
+        #modalFunction {
+            display: none;
+            transform: translate(-50%, -50%);
+            background: #2e2e2e;
+            border: none;
+            border-radius: 25px;
+            padding: 15px 25px;
+            width: 400px;
+            min-height: 230px;
+            max-height: 1500px;
+            z-index: 1001;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+        }
+
+        #modalContentFunction{
+            color: #4682B4;
+            font-size: 17px;
+        }
+
+        #grinch table {
+            width: 55%; /* Занимает всю ширину родительского контейнера */
+            border-spacing: 0; /* Убирает двойные линии между ячейками */
+            font-family: Tahoma, sans-serif;
+            margin: 0;
+            overflow: hidden;
+            border: none;
+        }
+
+        #grinch th, #grinch td {
+            padding: 10px; /* Внутренние отступы */
+            text-align: center; /* Текст по левому краю */
+            border: 1px solid #e0e0e0; /* Светло-серая рамка */
+        }
+
+        #grinch th {
+            background-color: #4682B4; /* Фон заголовка таблицы — розовый */
+            color: #2e2e2e; /* Белый текст в заголовке */
+            font-weight: bold; /* Жирный текст */
+        }
+
+        #grinch tr:nth-child(even) {
+            background-color: #f2f2f2; /* Серый фон для четных строк */
+        }
+
+        #grinch tr:nth-child(odd) {
+            background-color: #fff; /* Белый фон для нечетных строк */
+        }
+
+        #grinch td:first-child {
+            text-align: center; /* Центровка первой колонки */
+        }
+
+        #grinch table tr:hover {
+            background-color: #dbfb96; /* Слегка розовый цвет при наведении на строку */
+        }
+
+        #grinch thead th:first-child {
+            border-top-left-radius: 25px; /* Левый верхний угол */
+        }
+        #grinch thead th:last-child {
+            border-top-right-radius: 25px; /* Правый верхний угол */
+        }
+        #grinch tbody tr:last-child td:first-child {
+            border-bottom-left-radius: 25px; /* Левый нижний угол */
+        }
+        #grinch tbody tr:last-child td:last-child {
+            border-bottom-right-radius: 25px; /* Правый нижний угол */
+        }
+
+        #loadButton{
+            background-color: #ccff66;
+            color: #2e2e2e;
+            border: none;
+            border-radius: 25px;
+            width: 130px;
+            height: 40px;
+            text-align: center;
+            margin-bottom: 15px;
+            margin-top: 10px;
+            float: left;
+            font-size: 15px;
+            font-family: Tahoma, sans-serif;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #loadButton:hover {
+            background-color: #4682B4;
+        }
+
+        #closeclose{
+            background-color: #DC143C;
+            color: #ffffff;
+            border: none;
+            border-radius: 25px;
+            width: 130px;
+            height: 40px;
+            text-align: center;
+            margin-bottom: 15px;
+            margin-top: 10px;
+            float: right;
+            font-size: 15px;
+            font-family: Tahoma, sans-serif;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #closeclose:hover {
+            background-color: #DC143C;
+        }
+
+        #errorForm{
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #2e2e2e;
+            padding: 20px;
+            border: none;
+            border-radius: 25px;
+            width: 350px;
+            height: 190px;
+            align-items: center;
+        }
+
+        #errorTitle{
+            font-family: Tahoma, sans-serif;
+            font-weight: bold;
+            font-size: 27px;
+            color: #4682B4;
+            text-align: center;
+        }
+
+        #errorForm{
+        }
+
+        #errorMes{
+            text-align: center;
+            color: white;
+        }
+
+        #errorForm button{
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+            font-family: Tahoma, sans-serif;
+            border-radius: 25px;
+            border: none;
+            width: 35%;
+            height: 35px;
+            color: white;
+            background-color: #DC143C;
+            margin-left: 114px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #errorForm button:hover {
+            background-color: #DC143C;
+        }
+    </style>
+</head>
+<body>
+
+<div id="modalFunction">
+    <div id="modalContentFunction">
+        <h3>Выберите функцию</h3>
+        <table border="1" width="100%">
+            <thead id="grinch">
+            <tr>
+                <th>ID</th>
+                <th>Имя функции</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="function : ${functions}" class="function-row"
+                th:onclick="|selectFunction(this, '${function.id}', modalTarget)|">
+                <td th:text="${function.getId()}"></td>
+                <td th:text="${function.getFunctionType()}"></td>
+            </tr>
+            </tbody>
+        </table>
+        <button id="loadButton" onclick="loadFunction()">Загрузить</button>
+        <button id="closeclose" onclick="closeFunctionList()">Закрыть</button>
+    </div>
+</div>
+
+<div id="modal">
+    <div id="modalContent"></div>
+</div>
+
+<div id="modalSave">
+    <div id="modalContentSave">
+        <form onsubmit="saveFunction(event)">
+            <label for="funcName">Сохранение функции</label>
+            <input type="text" name="funcName" placeholder="Введите название" id="funcName" required>
+            <button type="submit">Cохранить</button>
+        </form>
+    </div>
+    <button onclick="closeSave()"  id="clooose">Закрыть</button>
+</div>
+
+<div id="modalAnother" class="modalAnother">
+    <div id="modalContentAnother">
+    </div>
+</div>
+
+<div id="modalEdit">
+    <div id="modalEditContent">
+        <form onsubmit="editFunc(event)">
+            <label for="xValue">Изменение точки</label>
+            <input type="number" name="xValue" placeholder="Какую точку" id="xValue" required>
+            <label for="yValue"></label>
+            <input type="number" name="yValue" id="yValue" placeholder="На что" required>
+            <button type="submit">Cохранить</button>
+        </form>
+    </div>
+    <button onclick="closeEdit()" id="closeEdit">Закрыть</button>
+</div>
+
+<div id="modalRemove">
+    <div id="modalRemoveContent">
+        <form onsubmit="removeFunc(event)">
+            <label for="xToRemove">Удаление точки</label>
+            <input type="number" name="xValue" id="xToRemove" placeholder="Какую точку" required>
+            <button type="submit">Cохранить</button>
+        </form>
+    </div>
+    <button onclick="closeRemove()" id="ccclose">Закрыть</button>
+</div>
+
+<div id="modalOverlay" class="modal-overlay"></div>
+
+<div th:if="${showError}">
+    <div th:replace="fragments/errorForm"></div>
+    <script>
+        document.getElementById('errorForm').style.display = 'block';
+    </script>
+</div>
+
+<div th:replace="fragments/errorForm"></div>
+</body>
+</html>

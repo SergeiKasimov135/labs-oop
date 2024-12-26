@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сложные функции</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif; /* Новый шрифт */
+            background-color: #f4f4f9; /* Светлый фон */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        form {
+            width: 100%;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px; /* Увеличенный отступ между колонками */
+            padding: 40px; /* Внешние отступы */
+            background-color: #ffffff; /* Белый фон */
+            border-radius: 16px; /* Скругленные края */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Легкая тень */
+        }
+
+        #iden9, #iden6, #iden2 {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background-color: #fff; /* Белый фон секций */
+            border: 2px solid rgba(0, 0, 0, 0.05); /* Легкая граница */
+            border-left-width: 10px; /* Цветовая полоса слева */
+            border-radius: 16px; /* Скругленные края */
+            padding: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        #iden9 {
+            border-left-color: #ff6f61; /* Оранжевая полоса */
+        }
+
+        #iden6 {
+            border-left-color: #26c6da; /* Голубая полоса */
+        }
+
+        #iden2 {
+            border-left-color: #9575cd; /* Фиолетовая полоса */
+        }
+
+        #iden9:hover, #iden6:hover, #iden2:hover {
+            transform: translateY(-5px); /* Легкий подъём */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        label {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        select, input {
+            width: 260px;
+            height: 50px;
+            font-size: 16px;
+            padding: 0 15px;
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            border-radius: 25px;
+            outline: none;
+            background-color: #ffffff; /* Белый фон */
+            box-shadow: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        select:focus, input:focus {
+            border-color: #26c6da; /* Голубой акцент при фокусе */
+            box-shadow: 0 0 8px rgba(38, 198, 218, 0.3);
+        }
+
+        button {
+            margin-top: 20px;
+            width: 150px;
+            height: 50px;
+            font-size: 16px;
+            font-weight: bold;
+            background-color: #ff6f61; /* Акцентный цвет */
+            color: #ffffff;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            background-color: #e55b50; /* Темнее при наведении */
+        }
+
+        button:disabled {
+            background-color: #f4f4f9;
+            color: #999;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+<form action="/composite/create" method="post">
+    <div class="container">
+        <div id="iden9">
+            <label for="firstFunc" id="polenoTitle">Первая функция:</label>
+            <select id="firstFunc" name="firstFunc">
+                <option th:each="entry : ${functions}" th:value="${entry.key}" th:text="${entry.key}"></option>
+            </select>
+        </div>
+
+        <div id="iden6">
+            <label for="secondFunc" id="veterTitle">Вторая функция:</label>
+            <select id="secondFunc" name="secondFunc">
+                <option th:each="entry : ${functions}" th:value="${entry.key}" th:text="${entry.key}"></option>
+            </select>
+        </div>
+
+        <div id="iden2">
+            <label for="compositeName" id="nochTitle">Название новой функции:</label>
+            <input type="text" id="compositeName" name="compositeName" required>
+            <button type="submit">Создать</button>
+        </div>
+    </div>
+</form>
+</body>

@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import ru.ssau.tk.kasimovserzhantov.labsoop.lab.security.JwtAuthTokenFilter;
+import ru.ssau.tk.kasimovserzhantov.labsoop.lab.security.LoginSuccessHandler;
 import ru.ssau.tk.kasimovserzhantov.labsoop.lab.service.DefaultUserDetailsService;
 
 @Configuration
@@ -30,6 +31,11 @@ public class SecurityBeans {
     }
 
     @Bean
+    public LoginSuccessHandler loginSuccessHandler() {
+        return new LoginSuccessHandler();
+    }
+
+    @Bean
     public DaoAuthenticationProvider authenticationProvider(DefaultUserDetailsService userDetailsService) {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
 
@@ -38,6 +44,7 @@ public class SecurityBeans {
 
         return authProvider;
     }
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
@@ -46,18 +53,25 @@ public class SecurityBeans {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
          return http
-                 .csrf(AbstractHttpConfigurer::disable)
+                 .csrf(AbstractHttpConfigurer::disable) // Отключение CSRF-защиты
                  .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/lab/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/lab/math-functions/list", "/lab/points/function/{functionId}").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/lab/math-functions", "/lab/points").authenticated()
-                        .requestMatchers(HttpMethod.PATCH, "/lab/math-functions/{functionId:\\d+}", "/lab/points/{pointId:\\d+}").authenticated()
-                        .requestMatchers(HttpMethod.DELETE, "/lab/math-functions}", "/lab/points").authenticated()
-                        .anyRequest().authenticated())
+                         .requestMatchers("/login", "/register", "/css/**", "/registere").permitAll() // Разрешить доступ без аутентификации
+                         .anyRequest().authenticated() // Все остальные запросы требуют аутентификации
+                 )
+                 .formLogin(formLogin -> formLogin
+                         .loginPage("/login") // Указание кастомной страницы логина
+                         .successHandler(loginSuccessHandler()) // Обработчик успешной аутентификации
+                         .permitAll() // Разрешить доступ к странице логина
+                 )
+                 .logout(logout -> logout
+                         .logoutUrl("/logout") // URL выхода из системы
+                         .logoutSuccessUrl("/login?logout") // Перенаправление после выхода
+                         .permitAll() // Разрешить доступ к функции logout
+                 )
                  .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                 .authenticationProvider(authenticationProvider(null))
-                 .addFilterBefore(authJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class)
+                         .maximumSessions(1) // Ограничить до одной активной сессии на пользователя
+                         .maxSessionsPreventsLogin(false) // При повторном входе завершить предыдущую сессию
+                 )
                  .build();
     }
 

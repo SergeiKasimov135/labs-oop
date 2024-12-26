@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Модальное окно с формой</title>
+    <style>
+        /* Заголовок страницы */
+        #pageTitle {
+            font-size: 24px;
+            color: #4682B4; /* Зеленый цвет */
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Параграф с текущей фабрикой */
+        #currentFactory {
+            font-size: 14px;
+            color: #ffffff; /* Белый текст */
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        /* Метка для выбора функции */
+        #functionLabel {
+            font-size: 14px;
+            color: #4682B4; /* Зеленый цвет */
+            margin-bottom: 5px;
+            display: block;
+            text-align: left;
+        }
+
+        /* Выпадающий список для выбора функции */
+        #function {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 25px;
+            background-color: #f0ffd4; /* Светло-зеленый фон */
+            font-size: 14px;
+            -webkit-appearance: none; /* Убирает стандартную стрелку в Chrome, Safari */
+            -moz-appearance: none; /* Убирает стандартную стрелку в Firefox */
+            appearance: none; /* Убирает стандартную стрелку в современных браузерах */
+            background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6"%3E%3Cpath d="M0 0l5 6 5-6z" fill="%23000000"/%3E%3C/svg%3E'); /* Своя стрелка */
+            background-repeat: no-repeat;
+            background-position: calc(100% - 20px) center; /* Смещение стрелки левее (20px) */
+            background-size: 10px;
+        }
+
+        /* Поле "Начало интервала" */
+        #xFrom {
+            width: 359px;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 25px;
+            font-size: 14px;
+            background-color: #ffffff; /* Белый фон */
+
+        }
+
+        /* Поле "Конец интервала" */
+        #xTo {
+            width: 359px;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 25px;
+            font-size: 14px;
+            background-color: #ffffff; /* Белый фон */
+        }
+
+        /* Поле "Количество точек" */
+        #count {
+            width: 359px;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 25px;
+            font-size: 14px;
+            background-color: #ffffff; /* Белый фон */
+        }
+
+        /* Кнопка "Создать" */
+        #createButton {
+            background-color: #4682B4; /* Зеленый фон */
+            border: none;
+            float: left;
+            padding: 10px 20px;
+            border-radius: 25px;
+            color: #2e2e2e; /* Темный текст */
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #closeButton{
+            background-color: #DC143C;
+            border: none;
+            float: right;
+            padding: 10px 20px;
+            border-radius: 25px;
+            color: #ffffff; /* Белый текст */
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Ховер-эффект для кнопки */
+        #createButton:hover {
+            background-color: #4682B4; /* Более насыщенный зеленый при наведении */
+        }
+
+        #closeButton:hover {
+            background-color: #DC143C;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <form action="/tabulated-function-mathfunc/createModal" method="post">
+        <input type="hidden" name="redirectTarget" th:value="${redirectTarget}">
+        <input type="hidden" name="target" th:value="${target}">
+        <h2 id="pageTitle">Создание табулированной функции</h2>
+        <p id="currentFactory" th:utext="'Текущая фабрика: <br>' + ${factory}"></p>
+
+        <label id="functionLabel" for="function">Выберите функцию:</label>
+        <select id="function" name="function">
+            <option th:each="entry : ${functionMap}" th:value="${entry.key}" th:text="${entry.key}"></option>
+        </select>
+
+        <label id="xFromLabel" for="xFrom"></label>
+        <input type="number" id="xFrom" name="xFrom" step="0.01" placeholder="Начало интервала " required>
+
+        <label id="xToLabel" for="xTo"></label>
+        <input type="number" id="xTo" name="xTo" step="0.01" placeholder="Конец интервала " required>
+
+        <label id="countLabel" for="count"></label>
+        <input type="number" id="count" name="count" min="2" placeholder="Количество точек " required>
+
+        <button id="createButton" type="submit">Создать</button>
+    </form>
+    <button id="closeButton" onclick="closeAnother()">Закрыть</button>
+</div>

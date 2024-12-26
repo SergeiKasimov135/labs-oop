@@ -6,6 +6,10 @@ public class ConstantFunction implements MathFunction {
 
     private final double constant;
 
+    public ConstantFunction() {
+        this.constant = 0;
+    }
+
     public ConstantFunction(double constant) {
         this.constant = constant;
     }

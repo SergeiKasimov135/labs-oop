@@ -1,0 +1,174 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif; /* Новый шрифт */
+    background-color: #f4f4f9; /* Светлый фон для контраста */
+}
+
+.main-container {
+    display: grid;
+    grid-template-areas:
+        "basic complex"
+        "graph differentiate"
+        "integral factory";
+    grid-template-columns: 1fr 1fr; /* Равное деление на две колонки */
+    grid-template-rows: auto;
+    gap: 20px; /* Увеличенное расстояние между ячейками */
+    padding: 40px; /* Увеличенные отступы вокруг контейнера */
+    height: 100vh; /* Растяжение на всю страницу */
+    box-sizing: border-box;
+}
+
+/* Каждая секция занимает уникальную область */
+#basic-operations {
+    grid-area: basic;
+}
+
+#complex-function {
+    grid-area: complex;
+}
+
+#plot-graph {
+    grid-area: graph;
+}
+
+#differentiate-function {
+    grid-area: differentiate;
+}
+
+#compute-integral {
+    grid-area: integral;
+}
+
+#factory-settings {
+    grid-area: factory;
+}
+
+/* Общий стиль для ячеек */
+#basic-operations, #complex-function, #plot-graph, #differentiate-function, #compute-integral, #factory-settings {
+    position: relative;
+    background-color: #ffffff; /* Белый фон */
+    padding: 30px;
+    text-align: left;
+    border-radius: 16px;
+    border: 2px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#basic-operations:hover, #complex-function:hover, #plot-graph:hover, #differentiate-function:hover, #compute-integral:hover, #factory-settings:hover {
+    transform: translateY(-5px); /* Лёгкий подъём при наведении */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Уникальные цвета для ячеек */
+#basic-operations {
+    background-color: #ffe4e1; /* Светлый розовый */
+    border-left: 10px solid #ff6f61;
+}
+
+#complex-function {
+    background-color: #fffacd; /* Светло-желтый */
+    border-left: 10px solid #ffcc00;
+}
+
+#plot-graph {
+    background-color: #e0f7fa; /* Светло-голубой */
+    border-left: 10px solid #26c6da;
+}
+
+#differentiate-function {
+    background-color: #e8f5e9; /* Светло-зеленый */
+    border-left: 10px solid #66bb6a;
+}
+
+#compute-integral {
+    background-color: #ede7f6; /* Светло-фиолетовый */
+    border-left: 10px solid #9575cd;
+}
+
+#factory-settings {
+    background-color: #fff3e0; /* Светло-оранжевый */
+    border-left: 10px solid #ff9800;
+}
+
+/* Заголовки в ячейках */
+#basic-operations h2, #complex-function h2, #plot-graph h2, #differentiate-function h2, #compute-integral h2, #factory-settings h2 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+/* Текст внутри ячеек */
+#basic-operations p, #complex-function p, #plot-graph p, #differentiate-function p, #compute-integral p, #factory-settings p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #555;
+}
+
+/* Кнопки */
+button {
+    width: 150px;
+    height: 50px;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    align-self: flex-end;
+}
+
+#basic-operations button {
+    background-color: #ff6f61;
+    color: white;
+}
+
+#complex-function button {
+    background-color: #ffcc00;
+    color: white;
+}
+
+#plot-graph button {
+    background-color: #26c6da;
+    color: white;
+}
+
+#differentiate-function button {
+    background-color: #66bb6a;
+    color: white;
+}
+
+#compute-integral button {
+    background-color: #9575cd;
+    color: white;
+}
+
+#factory-settings button {
+    background-color: #ff9800;
+    color: white;
+}
+
+button:hover {
+    transform: scale(1.1);
+    filter: brightness(0.9);
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #333; /* Темный фон для контраста */
+    color: white; /* Белый текст */
+    font-family: 'Roboto', sans-serif; /* Тот же шрифт, что и в остальном дизайне */
+    font-size: 16px;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1); /* Тень сверху для визуального отделения */
+    position: relative;
+    margin-top: 40px;
+    border-top: 3px solid #ff6f61; /* Оранжевая линия в тон базовых операций */
+}

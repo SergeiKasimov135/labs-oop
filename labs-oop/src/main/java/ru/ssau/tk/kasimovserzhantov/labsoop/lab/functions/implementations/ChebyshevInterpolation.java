@@ -3,6 +3,7 @@ package ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.implementations;
 import ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.coredefenitions.interfaces.MathFunction;
 
 public class ChebyshevInterpolation implements MathFunction {
+
     private final MathFunction function;
     private final double[] nodes;
 
@@ -14,6 +15,7 @@ public class ChebyshevInterpolation implements MathFunction {
         }
     }
 
+    @Override
     public double apply(double x) {
         double result = 0;
         for (int j = 0; j < nodes.length; j++) {
@@ -27,4 +29,5 @@ public class ChebyshevInterpolation implements MathFunction {
         }
         return result;
     }
+
 }

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/home.css}"/>
+    <title>Главная</title>
+</head>
+<body>
+<div class="main-container">
+    <div class="top-row">
+        <div class="basic-operations" id="basic-operations">
+            Базовые операции <br> над функциями
+            <button onclick="window.location.href='/tabulated-operations'">Создать</button>
+        </div>
+        <div class="complex-function" id="complex-function">
+            Создание сложной <br> функции
+            <button onclick="window.location.href='/composite'">Создать</button>
+        </div>
+        <div class="plot-graph" id="plot-graph">
+            Построение <br> графика
+            <button onclick="window.location.href='/graph'">Построить</button>
+        </div>
+    </div>
+    <div class="bottom-row">
+        <div class="differentiate-function" id="differentiate-function">
+            Дифференцирование <br> функции
+            <button onclick="window.location.href='/differential-operation'">Открыть</button>
+        </div>
+        <div class="calculate-integral" id="compute-integral">
+            Вычисление <br> интеграла
+            <button onclick="window.location.href='/integral'">Открыть</button>
+        </div>
+        <div class="factory-settings" id="factory-settings">
+            Настройки <br> фабрики
+            <button onclick="document.getElementById('settingsModal').showModal()">Изменить</button>
+        </div>
+    </div>
+</div>
+<dialog id="settingsModal">
+    <form action="/settings" method="post">
+        <label for="factoryType">Выберите фабрику:</label>
+        <select name="factoryType" id="factoryType">
+            <option value="array" th:selected="${selectedFactory == 'array'}">Фабрика на основе массива</option>
+            <option value="linkedlist" th:selected="${selectedFactory == 'linkedlist'}">Фабрика на основе связного списка</option>
+        </select>
+        <button type="submit" id="submit">Сохранить</button>
+        <button type="button" id="button" onclick="document.getElementById('settingsModal').close()">Закрыть</button>
+    </form>
+</dialog>
+<footer>
+    Created by: Сиёга Торвальдс, Андлюшка Столлман
+</footer>
+</body>
+</html>

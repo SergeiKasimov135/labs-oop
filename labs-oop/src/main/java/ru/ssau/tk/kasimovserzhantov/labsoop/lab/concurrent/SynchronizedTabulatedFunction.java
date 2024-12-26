@@ -40,6 +40,16 @@ public class SynchronizedTabulatedFunction implements TabulatedFunction {
     }
 
     @Override
+    public double[] getXValues() {
+        return function.getXValues();
+    }
+
+    @Override
+    public double[] getYValues() {
+        return function.getYValues();
+    }
+
+    @Override
     public synchronized void setY(int index, double value) {
         function.setY(index, value);
     }
@@ -90,5 +100,15 @@ public class SynchronizedTabulatedFunction implements TabulatedFunction {
     @Override
     public synchronized double apply(double x) {
         return function.apply(x);
+    }
+
+    @Override
+    public void remove(int index) {
+        function.remove(index);
+    }
+
+    @Override
+    public void insert(double x, double y) {
+        function.insert(x,y);
     }
 }

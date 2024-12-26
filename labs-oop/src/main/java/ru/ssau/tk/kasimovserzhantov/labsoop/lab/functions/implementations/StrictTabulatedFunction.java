@@ -1,11 +1,13 @@
 package ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.implementations;
 
+import lombok.Getter;
 import ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.coredefenitions.Point;
 import ru.ssau.tk.kasimovserzhantov.labsoop.lab.functions.coredefenitions.interfaces.TabulatedFunction;
 
 import java.util.Iterator;
 
 public class StrictTabulatedFunction implements TabulatedFunction {
+
     private final TabulatedFunction function;
 
     public StrictTabulatedFunction(TabulatedFunction function) {
@@ -30,6 +32,16 @@ public class StrictTabulatedFunction implements TabulatedFunction {
     @Override
     public void setY(int index, double value) {
         function.setY(index, value);
+    }
+
+    @Override
+    public double[] getXValues() {
+        return function.getXValues();
+    }
+
+    @Override
+    public double[] getYValues() {
+        return function.getYValues();
     }
 
     @Override
@@ -64,6 +76,16 @@ public class StrictTabulatedFunction implements TabulatedFunction {
             throw new UnsupportedOperationException("Interpolation is not allowed");
         }
         return getY(index);
+    }
+
+    @Override
+    public void insert(double x, double y) {
+        function.insert(x,y);
+    }
+
+    @Override
+    public void remove(int index) {
+        function.remove(index);
     }
 
 }
